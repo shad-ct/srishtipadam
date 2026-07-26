@@ -28,6 +28,7 @@ app.use('/api/magazines', require('./routes/magazineRoutes'));
 app.use('/api/committee', require('./routes/committeeRoutes'));
 app.use('/api/join', require('./routes/joinRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
+app.use('/api/stats', require('./routes/statsRoutes'));
 
 // Global Error Handler
 app.use((err, req, res, next) => {
