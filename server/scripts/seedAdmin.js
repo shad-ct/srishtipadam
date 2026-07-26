@@ -9,23 +9,15 @@ const seedAdmin = async () => {
   try {
     await connectDB();
 
-    // Check if admin exists
-    const existing = await Admin.findOne({ username: "admin" });
-    if (existing) {
-      console.log("Admin user already exists");
-      process.exit(0);
-    }
-
     const passwordHash = await bcrypt.hash("admin123", 10);
-    const admin = new Admin({
-      username: "admin",
-      passwordHash,
-    });
 
-    await admin.save();
-    console.log(
-      "Admin user created successfully (username: admin, password: admin123)",
+    await Admin.findOneAndUpdate(
+      { username: "admin" },
+      { username: "admin", passwordHash },
+      { upsert: true, returnDocument: "after", setDefaultsOnInsert: true },
     );
+
+    console.log("Admin user ready (username: admin, password: admin123)");
     process.exit(0);
   } catch (error) {
     console.error("Error seeding admin:", error);
