@@ -30,7 +30,7 @@ const Join = () => {
       await axiosClient.post('/join', data);
       
       const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '';
-      const text = `Hello, I would like to join Srishtipadam.\nName: ${data.name}\nDistrict: ${data.district}\nMobile: ${data.mobile}\nReason: ${data.reason}`;
+      const text = `Hello, I would like to join Srishtipadham.\nName: ${data.name}\nDistrict: ${data.district}\nMobile: ${data.mobile}\nReason: ${data.reason}`;
       const encodedText = encodeURIComponent(text);
       
       window.open(`https://wa.me/${whatsappNumber}?text=${encodedText}`, '_blank');

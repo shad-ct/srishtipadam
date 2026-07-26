@@ -25,7 +25,7 @@ const Committee = () => {
             <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-accent/50"></div>
           </h1>
           <p className="font-body text-text/70 /70 max-w-2xl mx-auto text-lg mt-8">
-            The dedicated minds behind Srishtipadam, working together to preserve and promote our literary heritage.
+            The dedicated minds behind Srishtipadham, working together to preserve and promote our literary heritage.
           </p>
         </motion.div>
         

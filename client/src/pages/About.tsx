@@ -3,11 +3,11 @@ import React from 'react';
 const About = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-16">
-      <h1 className="text-4xl font-bold text-primary mb-8 text-center">About Srishtipadam</h1>
+      <h1 className="text-4xl font-bold text-primary mb-8 text-center">About Srishtipadham</h1>
       
       <div className="prose dark:prose-invert prose-lg max-w-none">
         <p className="lead text-xl text-text-secondary text-center mb-12">
-          Srishtipadam is a literary and cultural organization dedicated to promoting reading, writing, and a deep appreciation for nature.
+          Srishtipadham is a literary and cultural organization dedicated to promoting reading, writing, and a deep appreciation for nature.
         </p>
         
         <div className="grid md:grid-cols-2 gap-12 mt-12">

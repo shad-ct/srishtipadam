@@ -104,7 +104,7 @@ const BookDetail = () => {
               ) : (
                 <p>
                   No detailed description available for this title. This is a placeholder description 
-                  demonstrating the typeset layout of a book detail page in Srishtipadam.
+                  demonstrating the typeset layout of a book detail page in Srishtipadham.
                 </p>
               )}
               {book.pages && <p className="text-sm mt-4 text-text-secondary">Pages: {book.pages}</p>}

@@ -4,6 +4,7 @@ import { useAdminAuth } from '../../context/AdminAuthContext';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import axiosClient from '../../api/axiosClient';
+import logo from '../../assets/logo.png';
 
 const AdminLogin = () => {
   const { t } = useTranslation();
@@ -33,7 +34,8 @@ const AdminLogin = () => {
         className="w-full max-w-md bg-surface-raised border border-border p-8 rounded-md shadow-lg"
       >
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-heading font-bold text-primary mb-2">Srishtipadam Admin</h1>
+          <img src={logo} alt="Srishtipadham" className="w-16 h-16 object-contain rounded-full mx-auto mb-4" />
+          <h1 className="text-3xl font-heading font-bold text-primary mb-2">Srishtipadham Admin</h1>
           <p className="text-text-secondary text-sm">{t('admin.login')}</p>
         </div>
 

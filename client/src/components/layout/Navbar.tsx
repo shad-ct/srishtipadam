@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import logo from '../../assets/logo.png';
 
 export const Navbar = () => {
   const { t, i18n } = useTranslation();
@@ -30,10 +31,8 @@ export const Navbar = () => {
         <div className="flex justify-between h-16">
           <div className="flex items-center">
             <Link to="/" className="flex-shrink-0 flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                S
-              </div>
-              <span className="font-bold text-xl text-primary">Srishtipadam</span>
+              <img src={logo} alt="Srishtipadham Logo" className="w-10 h-10 object-contain rounded-full" />
+              <span className="font-bold text-xl text-primary">Srishtipadham</span>
             </Link>
           </div>
 

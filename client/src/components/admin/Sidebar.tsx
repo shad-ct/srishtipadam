@@ -23,7 +23,7 @@ const Sidebar = () => {
   return (
     <aside className="w-64 bg-surface-raised border-r border-border flex flex-col h-screen sticky top-0">
       <div className="p-6 border-b border-border">
-        <h2 className="text-2xl font-heading font-bold text-primary">Srishtipadam</h2>
+        <h2 className="text-2xl font-heading font-bold text-primary">Srishtipadham</h2>
         <span className="text-xs uppercase tracking-widest text-text-secondary font-medium">Admin Dashboard</span>
       </div>
       

@@ -68,7 +68,7 @@ const Home = () => {
                 transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-text font-heading mb-8 leading-tight"
               >
-                Srishti<span className="text-primary">padam</span>
+                Srishti<span className="text-primary">padham</span>
               </motion.h1>
 
               <motion.p
@@ -130,7 +130,7 @@ const Home = () => {
                   {/* Book Title Area */}
                   <div className="h-[25%] bg-primary p-6 flex flex-col justify-center">
                     <h3 className="text-surface font-heading text-xl">The Kerala Story</h3>
-                    <p className="text-surface/70 /60 font-body text-sm mt-1">Srishtipadam Publications</p>
+                    <p className="text-surface/70 /60 font-body text-sm mt-1">Srishtipadham Publications</p>
                   </div>
                 </motion.div>
               </div>
