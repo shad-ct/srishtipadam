@@ -42,7 +42,7 @@ you go.
 - [x] Magazines: full CRUD, cover image + PDF upload
 - [x] Committee: full CRUD with `order` field for sorting
 - [x] Join requests: `POST /api/join` (public, logs to DB), `GET
-      /api/join` (admin, view submissions)
+    /api/join` (admin, view submissions)
 - [x] Seed script: create one admin user (`node scripts/seedAdmin.js`)
 - [x] Auth: `POST /api/auth/login` (bcrypt compare, sign JWT into httpOnly
       cookie), `POST /api/auth/logout`, `GET /api/auth/me`
@@ -78,6 +78,7 @@ you go.
 ## Phase 3 — Frontend: Public Pages
 
 ### Home
+
 - [ ] Hero section (nature-vibe illustration/SVG, tagline, CTA to Books)
 - [ ] Featured books preview strip
 - [ ] Upcoming event teaser
@@ -85,6 +86,7 @@ you go.
 - [ ] "Why Join" teaser → links to Join page
 
 ### Books
+
 - [ ] `BookGrid` fetching from `/api/books` via React Query, with
       loading skeletons
 - [ ] Search/filter (by category, name) — optional nice-to-have
@@ -96,10 +98,12 @@ you go.
       `/api/orders` → success toast + form reset
 
 ### About
+
 - [ ] Static page, content pulled from i18n JSON (both languages),
       simple animated section reveals
 
 ### Events
+
 - [ ] Tabs or sections: "Upcoming Events" / "Past Events Gallery"
 - [ ] `EventCard` — name, place, date/time, description
 - [ ] Gallery: lightbox for images (e.g. `yet-another-react-lightbox` or
@@ -107,16 +111,19 @@ you go.
 - [ ] Empty state if no upcoming events
 
 ### Magazines
+
 - [ ] `MagazineCard` grid — cover image, title, published date
 - [ ] Click → `PdfReader` page/modal using `react-pdf`, page navigation
       controls, loading state while PDF streams from Cloudinary
 - [ ] Description shown alongside reader
 
 ### Committee
+
 - [ ] Grid of `MemberCard` — photo, name, role, short description, phone
       (click-to-call link), sorted by `order` field
 
 ### Join Now
+
 - [ ] Static "Benefits of Joining" section (i18n content, icon list,
       animated on scroll)
 - [ ] `JoinForm` — name, district, mobile, why-join/description; on
