@@ -25,17 +25,17 @@ const MemberCard: React.FC<MemberCardProps> = ({ member, index }) => {
           />
         ) : (
           <div className="w-full h-full bg-surface-raised flex items-center justify-center">
-            <span className="font-heading text-4xl text-text-secondary">{member.name.charAt(0)}</span>
+            <span className="font-heading text-4xl text-text-secondary">{member.name?.charAt(0)}</span>
           </div>
         )}
       </div>
       
       <h3 className="font-heading text-2xl font-bold text-text mb-1">{member.name}</h3>
       <span className="text-primary font-medium text-sm uppercase tracking-wider mb-3">
-        {member.role.en}
+        {member.role?.en}
       </span>
       <p className="font-body text-text/70 /70 text-sm max-w-xs line-clamp-3">
-        {member.description.en}
+        {member.description?.en}
       </p>
     </motion.div>
   );
