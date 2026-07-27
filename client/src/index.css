@@ -2,39 +2,31 @@
 
 @layer base {
   :root {
-    /* Light mode — warm parchment */
-    --color-bg-base: #F0F7F2;
-    --color-surface-base: #E4F0E8;
+    --color-bg-base: #FBF8F1;
+    --color-surface-base: #F4FAF6;
     --color-surface-raised: #FFFFFF;
-    --color-text-base: #0F1F14;
-    --color-text-muted: #4A6357;
-    --color-border-base: #C8DDD0;
-    --color-brand-primary: #2C6E45;
-    --color-brand-primary-hover: #235838;
+    --color-text-base: #1E2A22;
+    --color-text-muted: #5C6F63;
+    --color-border-base: #DCE8DF;
+    --color-brand-primary: #4C9A6A;
+    --color-brand-primary-hover: #3E8058;
     --color-brand-accent: #C97B4E;
-    --color-status-success: #2C6E45;
+    --color-status-success: #4C9A6A;
     --color-status-error: #C2554B;
-
-    /* Stat card bg in light */
-    --color-stat-card: #DCEEE3;
   }
-
+  
   .dark {
-    /* Dark mode — exact match to reference image */
-    --color-bg-base: #0C1810;
-    --color-surface-base: #111F15;
-    --color-surface-raised: #172B1C;
-    --color-text-base: #E8F3EC;
-    --color-text-muted: #7A9A85;
-    --color-border-base: #243D2C;
-    --color-brand-primary: #4A9A68;
-    --color-brand-primary-hover: #5CB87C;
-    --color-brand-accent: #D4895A;
-    --color-status-success: #4A9A68;
+    --color-bg-base: #0F1F18;
+    --color-surface-base: #16281F;
+    --color-surface-raised: #1D3327;
+    --color-text-base: #E7F3EC;
+    --color-text-muted: #9CB3A6;
+    --color-border-base: #2B4536;
+    --color-brand-primary: #6BBE8A;
+    --color-brand-primary-hover: #7FCC9C;
+    --color-brand-accent: #E0A176;
+    --color-status-success: #6BBE8A;
     --color-status-error: #E08078;
-
-    /* Stat card bg in dark */
-    --color-stat-card: #172B1C;
   }
 
   body {
@@ -46,34 +38,20 @@
   --color-background: var(--color-bg-base);
   --color-surface: var(--color-surface-base);
   --color-surface-raised: var(--color-surface-raised);
-
+  
   --color-text: var(--color-text-base);
   --color-text-secondary: var(--color-text-muted);
-
+  
   --color-border: var(--color-border-base);
-
+  
   --color-primary: var(--color-brand-primary);
   --color-primary-hover: var(--color-brand-primary-hover);
   --color-accent: var(--color-brand-accent);
-
+  
   --color-success: var(--color-status-success);
   --color-error: var(--color-status-error);
 
   --font-heading: "Noto Serif Malayalam", "Playfair Display", serif;
-  --font-body: "Manjari", "Inter", sans-serif;
+  --font-body: "Manjari", "Lora", sans-serif;
 }
 
-/* Hide scrollbar but keep scroll functionality */
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-/* Firefly glow pulse */
-@keyframes fireflyPulse {
-  0%, 100% { opacity: 0; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.3); }
-}
