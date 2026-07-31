@@ -1,13 +1,9 @@
-import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axiosClient from '../api/axiosClient';
-import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import BookCard from '../components/books/BookCard';
 
 const Books = () => {
-  const { i18n } = useTranslation();
-  const lang = i18n.language as 'ml' | 'en';
   
   const { data: books, isLoading, error } = useQuery({
     queryKey: ['books'],

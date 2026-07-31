@@ -60,6 +60,7 @@ const AdminMagazines = () => {
     { header: t('admin.issueNumber'), accessor: 'issueNumber' },
     { header: t('admin.publishedDate'), accessor: 'publishedDate', render: (row: any) => row.publishedDate ? new Date(row.publishedDate).toLocaleDateString() : '' },
     { header: 'Public', accessor: 'isPublic', render: (row: any) => row.isPublic ? 'Yes' : 'No' },
+    { header: 'Featured', accessor: 'featured', render: (row: any) => row.featured ? 'Yes' : 'No' },
     { header: 'PDF', accessor: 'pdf', render: (row: any) => row.pdf?.url ? <a href={row.pdf.url} target="_blank" rel="noreferrer" className="text-primary hover:underline">View PDF</a> : 'No PDF' }
   ];
 
@@ -111,6 +112,7 @@ const AdminMagazines = () => {
       issueNumber: formData.get('issueNumber'),
       publishedDate: formData.get('publishedDate'),
       isPublic: formData.get('isPublic') === 'on',
+      featured: formData.get('featured') === 'on',
       pages: formData.get('pages') ? Number(formData.get('pages')) : undefined,
       pdf: pdfData
     };
@@ -166,9 +168,15 @@ const AdminMagazines = () => {
               <label className="block text-sm font-medium text-text-secondary mb-1">Number of Pages</label>
               <input name="pages" type="number" min="1" defaultValue={editingMag?.pages || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" />
             </div>
-            <div className="flex items-center mt-6 gap-2">
-              <input type="checkbox" name="isPublic" id="isPublic" defaultChecked={editingMag?.isPublic} className="w-4 h-4" />
-              <label htmlFor="isPublic" className="text-sm font-medium text-text-secondary">Show to Public</label>
+            <div className="flex flex-col gap-2 mt-6">
+              <div className="flex items-center gap-2">
+                <input type="checkbox" name="isPublic" id="isPublic" defaultChecked={editingMag?.isPublic} className="w-4 h-4" />
+                <label htmlFor="isPublic" className="text-sm font-medium text-text-secondary">Show to Public</label>
+              </div>
+              <div className="flex items-center gap-2">
+                <input type="checkbox" name="featured" id="featured" defaultChecked={editingMag?.featured} className="w-4 h-4" />
+                <label htmlFor="featured" className="text-sm font-medium text-text-secondary">Mark as Featured</label>
+              </div>
             </div>
           </div>
           

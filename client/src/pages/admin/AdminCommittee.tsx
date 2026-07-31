@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import DataTable from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -88,7 +88,7 @@ const AdminCommittee = () => {
   };
 
   const handleDelete = (member: any) => {
-    if (window.confirm(`${t('admin.deleteConfirm')} "${member.name}"?`)) {
+    if (window.confirm(`${t('admin.deleteConfirm')} "${member.name?.en || member.name?.ml || 'Unknown Member'}"?`)) {
       deleteMutation.mutate(member._id);
     }
   };

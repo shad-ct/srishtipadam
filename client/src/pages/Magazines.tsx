@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import MagazineCard from '../components/magazines/MagazineCard';
 import MagazineDetailsModal from '../components/magazines/MagazineDetailsModal';

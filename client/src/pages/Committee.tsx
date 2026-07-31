@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import MemberCard from '../components/committee/MemberCard';
 import { useQuery } from '@tanstack/react-query';

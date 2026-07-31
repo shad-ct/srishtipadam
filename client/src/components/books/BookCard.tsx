@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 interface Book {
   _id: string;
-  name: string;
-  writer: string;
+  name: { en?: string; ml?: string };
+  writer: { en?: string; ml?: string };
   price: number;
   coverImage?: { url: string };
   category?: string;
@@ -52,12 +52,12 @@ const BookCard: React.FC<BookCardProps> = ({ book, index }) => {
               {book.coverImage?.url ? (
                 <img 
                   src={book.coverImage.url} 
-                  alt={book.name} 
+                  alt={book.name?.en || book.name?.ml || 'Unknown Title'} 
                   className="w-full h-full object-cover rounded-r-sm opacity-90 group-hover:opacity-100 transition-opacity duration-300"
                 />
               ) : (
                 <div className="w-full h-full bg-primary/10 flex flex-col items-center justify-center p-4 rounded-r-sm">
-                   <span className="font-heading text-xl text-primary text-center leading-snug">{book.name}</span>
+                   <span className="font-heading text-xl text-primary text-center leading-snug">{book.name?.en || book.name?.ml || 'Unknown Title'}</span>
                 </div>
               )}
             </motion.div>
@@ -71,10 +71,10 @@ const BookCard: React.FC<BookCardProps> = ({ book, index }) => {
               </span>
             )}
             <h3 className="font-heading text-2xl font-semibold text-text mb-1 line-clamp-2">
-              {book.name}
+              {book.name?.en || book.name?.ml || 'Unknown Title'}
             </h3>
             <p className="font-body text-text/70 /70 text-sm mb-4">
-              {book.writer}
+              {book.writer?.en || book.writer?.ml || 'Unknown Author'}
             </p>
             <div className="mt-auto flex items-center justify-between">
               <span className="font-body font-bold text-lg text-text">

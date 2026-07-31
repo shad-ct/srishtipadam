@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import EventCard from '../components/events/EventCard';
 import EventDetailsModal from '../components/events/EventDetailsModal';

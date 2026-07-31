@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axiosClient from '../api/axiosClient';
@@ -7,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 const BookDetail = () => {
   const { id } = useParams();
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const lang = i18n.language as 'ml' | 'en';
 
   const { data: book, isLoading, error } = useQuery({
@@ -65,13 +64,13 @@ const BookDetail = () => {
               {book.coverImage?.url ? (
                 <img 
                   src={book.coverImage.url} 
-                  alt={book.name} 
+                  alt={book.name?.en || book.name?.ml || 'Unknown Title'} 
                   className="w-full h-full object-cover rounded-r-sm opacity-95 hover:opacity-100 transition-opacity" 
                 />
               ) : (
                 <div className="w-full h-full bg-primary/10 flex flex-col items-center justify-center p-6 rounded-r-sm text-center">
-                  <span className="font-heading text-2xl text-primary mb-4 leading-snug">{book.name}</span>
-                  <span className="font-body text-text-secondary text-sm">{book.writer}</span>
+                  <span className="font-heading text-2xl text-primary mb-4 leading-snug">{book.name?.en || book.name?.ml || 'Unknown Title'}</span>
+                  <span className="font-body text-text-secondary text-sm">{book.writer?.en || book.writer?.ml || 'Unknown Author'}</span>
                 </div>
               )}
             </div>
@@ -91,11 +90,11 @@ const BookDetail = () => {
             )}
             
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text font-heading mb-4 leading-tight">
-              {book.name}
+              {book.name?.en || book.name?.ml || 'Unknown Title'}
             </h1>
             
             <p className="text-xl md:text-2xl font-body text-text-secondary mb-8 border-b border-border pb-8">
-              By <span className="font-semibold text-text">{book.writer}</span>
+              By <span className="font-semibold text-text">{book.writer?.en || book.writer?.ml || 'Unknown Author'}</span>
             </p>
 
             <div className="prose prose-lg text-text/80 mb-10 font-body leading-relaxed max-w-prose">

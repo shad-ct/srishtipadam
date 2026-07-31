@@ -59,6 +59,7 @@ const AdminBooks = () => {
     { header: t('admin.author'), accessor: 'writer', render: (row: any) => row.writer?.en || row.writer || '' },
     { header: t('admin.category'), accessor: 'category' },
     { header: t('admin.price'), accessor: 'price' },
+    { header: 'Featured', accessor: 'featured', render: (row: any) => row.featured ? 'Yes' : 'No' },
   ];
 
   const handleEdit = (book: any) => {
@@ -68,7 +69,7 @@ const AdminBooks = () => {
   };
 
   const handleDelete = (book: any) => {
-    if (window.confirm(`${t('admin.deleteConfirm')} "${book.name}"?`)) {
+    if (window.confirm(`${t('admin.deleteConfirm')} "${book.name?.en || book.name?.ml || 'Unknown Title'}"?`)) {
       deleteMutation.mutate(book._id);
     }
   };
@@ -108,6 +109,7 @@ const AdminBooks = () => {
       writer: { en: formData.get('writerEn'), ml: formData.get('writerMl') },
       category: formData.get('category'),
       price: Number(formData.get('price')),
+      featured: formData.get('featured') === 'on',
       coverImage: coverImageUrl,
     };
 
@@ -233,6 +235,10 @@ const AdminBooks = () => {
               className="w-full px-3 py-2 bg-surface border border-border rounded-md focus:border-primary focus:outline-none text-text dark:bg-gray-800 dark:text-white" 
               required 
             />
+          </div>
+          <div className="flex items-center gap-2 mt-2">
+            <input type="checkbox" name="featured" id="featured" defaultChecked={editingBook?.featured} className="w-4 h-4" />
+            <label htmlFor="featured" className="text-sm font-medium text-text-secondary">Mark as Featured</label>
           </div>
           <div className="pt-4 flex justify-end gap-3 border-t border-border mt-6">
             <button 

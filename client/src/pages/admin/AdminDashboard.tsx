@@ -1,4 +1,3 @@
-import React from 'react';
 import StatCard from '../../components/admin/StatCard';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';

@@ -3,7 +3,16 @@ const asyncHandler = require('../utils/asyncHandler');
 const { deleteFromCloudinary } = require('../utils/cloudinaryUpload');
 
 const getMagazines = asyncHandler(async (req, res) => {
-  const magazines = await Magazine.find({}).sort('-publishedDate');
+  const { featured, public: isPublic } = req.query;
+  const filter = {};
+
+  if (featured === 'true') filter.featured = true;
+  if (isPublic === 'true') {
+    filter.isPublic = true;
+    filter.publishedDate = { $lte: new Date() };
+  }
+
+  const magazines = await Magazine.find(filter).sort('-publishedDate');
   res.json(magazines);
 });
 

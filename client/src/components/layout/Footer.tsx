@@ -1,10 +1,7 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
 import logo from '../../assets/logo.png';
 
 export const Footer = () => {
-  const { t } = useTranslation();
-  
+    
   return (
     <footer className="bg-surface py-8 mt-auto border-t border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -8,6 +8,7 @@ const magazineSchema = new mongoose.Schema({
   issueNumber: { type: String },
   publishedDate: { type: Date },
   isPublic: { type: Boolean, default: false },
+  featured: { type: Boolean, default: false },
   pages: { type: Number }
 }, { timestamps: true });
 
