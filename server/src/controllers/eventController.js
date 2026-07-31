@@ -12,6 +12,12 @@ const getEvents = asyncHandler(async (req, res) => {
     filter.isUpcoming = false;
   }
 
+  // Auto-unmark events whose date has passed
+  await Event.updateMany(
+    { date: { $lt: new Date(new Date().setHours(0,0,0,0)) }, isUpcoming: true },
+    { $set: { isUpcoming: false } }
+  );
+
   const events = await Event.find(filter).sort(type === 'upcoming' ? 'date' : '-date');
   res.json(events);
 });

@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   :root {
@@ -14,7 +15,7 @@
     --color-status-success: #4C9A6A;
     --color-status-error: #C2554B;
   }
-  
+
   .dark {
     --color-bg-base: #0F1F18;
     --color-surface-base: #16281F;
@@ -30,7 +31,7 @@
   }
 
   body {
-    @apply bg-background text-text transition-colors duration-300 font-body;
+    @apply bg-background text-text transition-colors duration-300 font-sans;
   }
 }
 
@@ -38,20 +39,22 @@
   --color-background: var(--color-bg-base);
   --color-surface: var(--color-surface-base);
   --color-surface-raised: var(--color-surface-raised);
-  
+
   --color-text: var(--color-text-base);
   --color-text-secondary: var(--color-text-muted);
-  
+
   --color-border: var(--color-border-base);
-  
+
   --color-primary: var(--color-brand-primary);
   --color-primary-hover: var(--color-brand-primary-hover);
   --color-accent: var(--color-brand-accent);
-  
+
   --color-success: var(--color-status-success);
   --color-error: var(--color-status-error);
 
-  --font-heading: "Noto Serif Malayalam", "Playfair Display", serif;
-  --font-body: "Manjari", "Lora", sans-serif;
+  /* Fraunces reads as a crafted literary serif rather than a generic
+     AI-default display font; Instrument Sans + Baloo Chettan 2 keep body
+     copy and Malayalam text warm instead of clinical. */
+  --font-serif: "Fraunces", "Noto Serif Malayalam", serif;
+  --font-sans: "Instrument Sans", "Baloo Chettan 2", sans-serif;
 }
-

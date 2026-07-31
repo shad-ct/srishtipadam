@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DataTable from '../../components/admin/DataTable';
 import Modal from '../../components/admin/Modal';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axiosClient from '../../api/axiosClient';
 import { useTranslation } from 'react-i18next';
+import { useLocation } from 'react-router-dom';
 
 const AdminEvents = () => {
   const { t } = useTranslation();
@@ -12,6 +13,14 @@ const AdminEvents = () => {
   const [previewImages, setPreviewImages] = useState<any[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const queryClient = useQueryClient();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.openAddModal) {
+      handleAddNew();
+      window.history.replaceState({}, document.title);
+    }
+  }, [location.state]);
 
   const { data: events, isLoading } = useQuery({
     queryKey: ['adminEvents'],
@@ -45,6 +54,7 @@ const AdminEvents = () => {
   });
 
   const columns = [
+    { header: 'Poster', accessor: 'images', render: (row: any) => row.images?.[0]?.url ? <img src={row.images[0].url} alt="Poster" className="w-16 h-10 object-cover rounded shadow-sm" /> : null },
     { header: t('admin.eventNameEn'), accessor: 'name', render: (row: any) => row.name?.en || '' },
     { header: t('admin.locationEn'), accessor: 'place', render: (row: any) => row.place?.en || '' },
     { header: t('admin.date'), accessor: 'date', render: (row: any) => new Date(row.date).toLocaleDateString() },

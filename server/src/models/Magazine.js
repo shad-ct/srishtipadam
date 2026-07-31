@@ -6,7 +6,9 @@ const magazineSchema = new mongoose.Schema({
   coverImage: { url: String, publicId: String },
   pdf: { url: String, publicId: String },
   issueNumber: { type: String },
-  publishedDate: { type: Date }
+  publishedDate: { type: Date },
+  isPublic: { type: Boolean, default: false },
+  pages: { type: Number }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Magazine', magazineSchema);
