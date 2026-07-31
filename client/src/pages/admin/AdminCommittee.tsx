@@ -44,10 +44,41 @@ const AdminCommittee = () => {
     }
   });
 
+  const handleMoveOrder = async (member: any, direction: 'up' | 'down') => {
+    if (!members) return;
+    const currentIndex = members.findIndex((m: any) => m._id === member._id);
+    if (currentIndex === -1) return;
+    
+    if (direction === 'up' && currentIndex > 0) {
+      const prevMember = members[currentIndex - 1];
+      const tempOrder = member.order || currentIndex;
+      const prevOrder = prevMember.order || (currentIndex - 1);
+      await axiosClient.put(`/committee/${member._id}`, { ...member, order: prevOrder });
+      await axiosClient.put(`/committee/${prevMember._id}`, { ...prevMember, order: tempOrder });
+      queryClient.invalidateQueries({ queryKey: ['adminCommittee'] });
+    } else if (direction === 'down' && currentIndex < members.length - 1) {
+      const nextMember = members[currentIndex + 1];
+      const tempOrder = member.order || currentIndex;
+      const nextOrder = nextMember.order || (currentIndex + 1);
+      await axiosClient.put(`/committee/${member._id}`, { ...member, order: nextOrder });
+      await axiosClient.put(`/committee/${nextMember._id}`, { ...nextMember, order: tempOrder });
+      queryClient.invalidateQueries({ queryKey: ['adminCommittee'] });
+    }
+  };
+
   const columns = [
-    { header: t('admin.name'), accessor: 'name' },
+    { header: 'Image', accessor: 'image', render: (row: any) => {
+        const imgUrl = row.image || row.photo?.url;
+        return imgUrl ? <img src={imgUrl} alt="Profile" className="w-10 h-10 object-cover rounded-full shadow-sm" /> : null;
+    }},
+    { header: t('admin.name'), accessor: 'name', render: (row: any) => row.name?.en || row.name || '' },
     { header: t('admin.roleEn'), accessor: 'role', render: (row: any) => row.role?.en || '' },
-    { header: t('admin.displayOrder'), accessor: 'order' },
+    { header: t('admin.displayOrder'), accessor: 'order', render: (row: any) => (
+        <div className="flex items-center gap-2">
+            <button onClick={() => handleMoveOrder(row, 'up')} className="p-1 bg-surface-raised rounded border border-border hover:bg-border transition-colors text-xs font-bold w-6 h-6 flex items-center justify-center">↑</button>
+            <button onClick={() => handleMoveOrder(row, 'down')} className="p-1 bg-surface-raised rounded border border-border hover:bg-border transition-colors text-xs font-bold w-6 h-6 flex items-center justify-center">↓</button>
+        </div>
+    ) },
   ];
 
   const handleEdit = (member: any) => {
@@ -92,10 +123,9 @@ const AdminCommittee = () => {
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    const newMember = {
-      name: formData.get('name'),
+    const newMember: any = {
+      name: { en: formData.get('nameEn'), ml: formData.get('nameMl') },
       role: { en: formData.get('roleEn'), ml: formData.get('roleMl') },
-      order: Number(formData.get('order')),
       image: imageUrl,
       facebook: formData.get('facebook'),
       whatsapp: formData.get('whatsapp'),
@@ -103,8 +133,9 @@ const AdminCommittee = () => {
     };
 
     if (editingMember) {
-      updateMutation.mutate({ ...newMember, _id: editingMember._id });
+      updateMutation.mutate({ ...newMember, _id: editingMember._id, order: editingMember.order });
     } else {
+      newMember.order = members?.length || 0;
       createMutation.mutate(newMember);
     }
   };
@@ -147,9 +178,15 @@ const AdminCommittee = () => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.name')}</label>
-            <input name="name" defaultValue={editingMember?.name || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" required />
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.name')} (EN)</label>
+              <input name="nameEn" defaultValue={editingMember?.name?.en || (typeof editingMember?.name === 'string' ? editingMember?.name : '') || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" required />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.name')} (ML)</label>
+              <input name="nameMl" defaultValue={editingMember?.name?.ml || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" />
+            </div>
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -165,11 +202,11 @@ const AdminCommittee = () => {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">Phone Number</label>
-              <input name="phoneNumber" type="tel" defaultValue={editingMember?.phoneNumber || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" />
+              <input name="phoneNumber" type="tel" maxLength={10} defaultValue={editingMember?.phoneNumber || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" />
             </div>
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">WhatsApp</label>
-              <input name="whatsapp" type="tel" defaultValue={editingMember?.whatsapp || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" />
+              <input name="whatsapp" type="tel" maxLength={10} defaultValue={editingMember?.whatsapp || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" />
             </div>
           </div>
           
@@ -178,10 +215,7 @@ const AdminCommittee = () => {
             <input name="facebook" type="url" defaultValue={editingMember?.facebook || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" />
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.displayOrder')}</label>
-            <input name="order" type="number" defaultValue={editingMember?.order || 0} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" required />
-          </div>
+
           <div className="pt-4 flex justify-end gap-3 border-t border-border mt-6">
             <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 text-text-secondary hover:text-text font-medium">{t('admin.cancel')}</button>
             <button type="submit" className="bg-primary hover:bg-primary-hover text-surface-raised px-4 py-2 rounded-md font-medium" disabled={uploadingImage}>{t('admin.save')}</button>
