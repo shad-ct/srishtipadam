@@ -48,20 +48,24 @@ const AdminCommittee = () => {
     if (!members) return;
     const currentIndex = members.findIndex((m: any) => m._id === member._id);
     if (currentIndex === -1) return;
-    
+
     if (direction === 'up' && currentIndex > 0) {
       const prevMember = members[currentIndex - 1];
-      const tempOrder = member.order || currentIndex;
-      const prevOrder = prevMember.order || (currentIndex - 1);
-      await axiosClient.put(`/committee/${member._id}`, { ...member, order: prevOrder });
-      await axiosClient.put(`/committee/${prevMember._id}`, { ...prevMember, order: tempOrder });
+      const myOrder   = member.order     ?? currentIndex;
+      const prevOrder = prevMember.order ?? (currentIndex - 1);
+      await Promise.all([
+        axiosClient.put(`/committee/${member._id}`,     { order: prevOrder }),
+        axiosClient.put(`/committee/${prevMember._id}`, { order: myOrder }),
+      ]);
       queryClient.invalidateQueries({ queryKey: ['adminCommittee'] });
     } else if (direction === 'down' && currentIndex < members.length - 1) {
       const nextMember = members[currentIndex + 1];
-      const tempOrder = member.order || currentIndex;
-      const nextOrder = nextMember.order || (currentIndex + 1);
-      await axiosClient.put(`/committee/${member._id}`, { ...member, order: nextOrder });
-      await axiosClient.put(`/committee/${nextMember._id}`, { ...nextMember, order: tempOrder });
+      const myOrder   = member.order     ?? currentIndex;
+      const nextOrder = nextMember.order ?? (currentIndex + 1);
+      await Promise.all([
+        axiosClient.put(`/committee/${member._id}`,     { order: nextOrder }),
+        axiosClient.put(`/committee/${nextMember._id}`, { order: myOrder }),
+      ]);
       queryClient.invalidateQueries({ queryKey: ['adminCommittee'] });
     }
   };

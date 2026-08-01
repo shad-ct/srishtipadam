@@ -17,22 +17,30 @@
   }
 
   .dark {
-    --color-bg-base: #0F1F18;
-    --color-surface-base: #16281F;
-    --color-surface-raised: #1D3327;
+    --color-bg-base: #070E0B;
+    --color-surface-base: #0D1C13;
+    --color-surface-raised: #112218;
     --color-text-base: #E7F3EC;
     --color-text-muted: #9CB3A6;
-    --color-border-base: #2B4536;
-    --color-brand-primary: #6BBE8A;
-    --color-brand-primary-hover: #7FCC9C;
+    --color-border-base: #1E3626;
+    --color-brand-primary: #3DB86B;
+    --color-brand-primary-hover: #4fcf7e;
     --color-brand-accent: #E0A176;
-    --color-status-success: #6BBE8A;
+    --color-status-success: #3DB86B;
     --color-status-error: #E08078;
   }
 
   body {
     @apply bg-background text-text transition-colors duration-300 font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Premium scrollbar */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #4C9A6A55; border-radius: 99px; }
+  ::-webkit-scrollbar-thumb:hover { background: #4C9A6A99; }
 }
 
 @theme {
@@ -52,9 +60,43 @@
   --color-success: var(--color-status-success);
   --color-error: var(--color-status-error);
 
-  /* Fraunces reads as a crafted literary serif rather than a generic
-     AI-default display font; Instrument Sans + Baloo Chettan 2 keep body
-     copy and Malayalam text warm instead of clinical. */
-  --font-serif: "Fraunces", "Noto Serif Malayalam", serif;
-  --font-sans: "Instrument Sans", "Baloo Chettan 2", sans-serif;
+  /* Playfair Display: high-contrast editorial serif with swash italics
+     DM Serif Display: dramatic display headlines with generous tracking
+     Plus Jakarta Sans: geometric yet warm for body/UI copy
+     Baloo Chettan 2: keeps Malayalam text warm and readable */
+  --font-serif: "Playfair Display", "Noto Serif Malayalam", serif;
+  --font-display: "DM Serif Display", "Playfair Display", serif;
+  --font-sans: "Plus Jakarta Sans", "Baloo Chettan 2", sans-serif;
+  --font-heading: "Playfair Display", serif;
+}
+
+/* Glassmorphism utilities */
+@layer utilities {
+  .glass {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .glass-card {
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(24px) saturate(200%);
+    -webkit-backdrop-filter: blur(24px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 8px 32px rgba(31, 62, 47, 0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+  .dark .glass-card {
+    background: rgba(22, 40, 31, 0.7);
+    border: 1px solid rgba(107, 190, 138, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(107, 190, 138, 0.08);
+  }
+  .glass-hero {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  .glow-green {
+    box-shadow: 0 0 60px rgba(76, 154, 106, 0.18), 0 0 120px rgba(76, 154, 106, 0.08);
+  }
 }

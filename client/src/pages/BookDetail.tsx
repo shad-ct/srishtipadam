@@ -23,17 +23,17 @@ const BookDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="w-full min-h-[70vh] flex items-center justify-center bg-background">
-        <div className="text-text-secondary animate-pulse">Loading book details...</div>
+      <div className="w-full min-h-[70vh] flex items-center justify-center bg-[#F4F1EA] dark:bg-[#070E0B]">
+        <div className="text-[#9CB3A6] animate-pulse font-medium">Loading book details...</div>
       </div>
     );
   }
 
   if (error || !book) {
     return (
-      <div className="w-full min-h-[70vh] flex flex-col items-center justify-center bg-background">
-        <h2 className="text-3xl font-heading text-error mb-4">Book Not Found</h2>
-        <Link to="/books" className="text-primary hover:underline underline-offset-4">
+      <div className="w-full min-h-[70vh] flex flex-col items-center justify-center bg-[#F4F1EA] dark:bg-[#070E0B]">
+        <h2 className="text-3xl font-extrabold text-red-400 mb-4">Book Not Found</h2>
+        <Link to="/books" className="text-[#3DB86B] hover:underline underline-offset-4 font-semibold">
           ← Back to Collection
         </Link>
       </div>
@@ -41,36 +41,44 @@ const BookDetail = () => {
   }
 
   return (
-    <div className="w-full bg-background min-h-screen pt-12 pb-24">
-      <div className="max-w-6xl mx-auto px-4">
-        
-        <Link to="/books" className="inline-flex items-center text-text-secondary hover:text-primary transition-colors mb-12 font-medium">
+    <div className="w-full bg-[#F4F1EA] dark:bg-[#070E0B] min-h-screen pt-32 pb-24 relative overflow-hidden">
+      {/* Ambient glow orbs */}
+      <div className="pointer-events-none absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-[#3DB86B]/06 dark:bg-[#3DB86B]/04 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-[#C97B4E]/05 dark:bg-[#C97B4E]/03 blur-[100px]" />
+
+      <div className="max-w-6xl mx-auto px-4 relative z-10">
+        <Link to="/books" className="inline-flex items-center text-[#5B7566] dark:text-[#9CB3A6] hover:text-[#3DB86B] transition-colors mb-12 font-semibold">
           <span className="mr-2">←</span> Back to Collection
         </Link>
 
         <div className="flex flex-col md:flex-row gap-12 lg:gap-20">
           
-          {/* Left Column - Book Cover (Physical representation) */}
-          <motion.div 
+          {/* Book cover with glory glow */}
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="w-full md:w-5/12 lg:w-1/3"
           >
-            <div className="relative w-full aspect-[2/3] bg-surface-raised border border-border rounded-sm shadow-xl flex items-center justify-center perspective-[1200px]">
-              {/* Decorative left spine hint */}
-              <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-black/10 to-transparent border-r border-border z-10 pointer-events-none" />
-              
+            <div className="group relative w-full aspect-[2/3] rounded-xl overflow-hidden border border-[#DCE8DF] dark:border-[#1E3626] bg-white dark:bg-[#0D1C13] shadow-2xl">
+              {/* Glory top edge */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#3DB86B] to-transparent z-20" />
+              {/* Glory glow orb behind cover */}
+              <div className="absolute -inset-4 bg-[#3DB86B]/08 dark:bg-[#3DB86B]/06 blur-2xl rounded-full pointer-events-none" />
+              <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-black/15 to-transparent border-r border-[#DCE8DF] dark:border-[#1E3626] z-10 pointer-events-none" />
               {book.coverImage?.url ? (
-                <img 
-                  src={book.coverImage.url} 
-                  alt={book.name?.en || book.name?.ml || 'Unknown Title'} 
-                  className="w-full h-full object-cover rounded-r-sm opacity-95 hover:opacity-100 transition-opacity" 
+                <img
+                  src={book.coverImage.url}
+                  alt={book.name?.en || book.name?.ml || 'Unknown Title'}
+                  className="w-full h-full object-cover rounded-r-sm opacity-95 hover:opacity-100 transition-opacity"
                 />
               ) : (
-                <div className="w-full h-full bg-primary/10 flex flex-col items-center justify-center p-6 rounded-r-sm text-center">
-                  <span className="font-heading text-2xl text-primary mb-4 leading-snug">{book.name?.en || book.name?.ml || 'Unknown Title'}</span>
-                  <span className="font-body text-text-secondary text-sm">{book.writer?.en || book.writer?.ml || 'Unknown Author'}</span>
+                <div className="w-full h-full bg-[#3DB86B]/10 flex flex-col items-center justify-center p-6 text-center">
+                  <span className="font-extrabold text-2xl text-[#3DB86B] mb-4 leading-snug"
+                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                    {book.name?.en || book.name?.ml || 'Unknown Title'}
+                  </span>
+                  <span className="text-[#9CB3A6] text-sm font-medium">{book.writer?.en || book.writer?.ml}</span>
                 </div>
               )}
             </div>
@@ -84,17 +92,21 @@ const BookDetail = () => {
             className="w-full md:w-7/12 lg:w-2/3 flex flex-col"
           >
             {book.category && (
-              <span className="text-xs uppercase tracking-widest text-primary mb-3 font-bold border border-primary/20 bg-primary/5 inline-block w-max px-3 py-1 rounded-sm">
+              <span className="text-[10px] uppercase tracking-widest text-[#3DB86B] mb-3 font-extrabold border border-[#3DB86B]/25 bg-[#3DB86B]/08 inline-block w-max px-3 py-1 rounded-full"
+                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
                 {book.category}
               </span>
             )}
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text font-heading mb-4 leading-tight">
+
+            <h1
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#1F3E2F] dark:text-white mb-4 leading-tight tracking-tight"
+              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}
+            >
               {book.name?.en || book.name?.ml || 'Unknown Title'}
             </h1>
-            
-            <p className="text-xl md:text-2xl font-body text-text-secondary mb-8 border-b border-border pb-8">
-              By <span className="font-semibold text-text">{book.writer?.en || book.writer?.ml || 'Unknown Author'}</span>
+
+            <p className="text-xl md:text-2xl font-medium text-[#5B7566] dark:text-[#9CB3A6] mb-8 pb-8 border-b border-[#DCE8DF] dark:border-[#1E3626]">
+              By <span className="font-bold text-[#1F3E2F] dark:text-white">{book.writer?.en || book.writer?.ml || 'Unknown Author'}</span>
             </p>
 
             <div className="prose prose-lg text-text/80 mb-10 font-body leading-relaxed max-w-prose">
@@ -109,15 +121,23 @@ const BookDetail = () => {
               {book.pages && <p className="text-sm mt-4 text-text-secondary">Pages: {book.pages}</p>}
             </div>
 
-            <div className="mt-auto bg-surface-raised border border-border p-8 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
+            <div className="mt-auto bg-white dark:bg-[#0D1C13] border border-[#DCE8DF] dark:border-[#1E3626] p-8 flex flex-col sm:flex-row items-center justify-between gap-6 rounded-2xl relative overflow-hidden">
+              {/* Glory glow on order box */}
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#3DB86B]/50 to-transparent" />
               <div>
-                <span className="block text-sm text-text-secondary font-medium uppercase tracking-widest mb-1">Price</span>
-                <span className="font-body font-bold text-4xl text-text">₹{book.price}</span>
+                <span className="block text-[11px] text-[#9CB3A6] font-bold uppercase tracking-widest mb-1">Price</span>
+                <span className="font-extrabold text-4xl text-[#1F3E2F] dark:text-white"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>₹{book.price}</span>
               </div>
-              
-              <button className="w-full sm:w-auto bg-primary hover:bg-primary-hover text-surface-raised font-medium text-lg px-10 py-4 shadow-sm transition-all duration-300 relative group">
-                <span className="relative z-10">Order Copy</span>
-                <div className="absolute inset-0 border border-primary/20 scale-105 group-hover:scale-100 transition-transform duration-300" />
+              <button
+                className="w-full sm:w-auto text-white font-bold text-base px-10 py-4 rounded-full transition-all duration-300 hover:scale-[1.04] hover:shadow-xl active:scale-95"
+                style={{
+                  fontFamily: "'Plus Jakarta Sans', sans-serif",
+                  background: 'linear-gradient(135deg, #3DB86B 0%, #2d9d57 100%)',
+                  boxShadow: '0 4px 20px rgba(61,184,107,0.3)',
+                }}
+              >
+                Order Copy
               </button>
             </div>
             

@@ -15,27 +15,39 @@ const Events = () => {
   });
 
   const [selectedEvent, setSelectedEvent] = useState<any>(null);
+
   return (
-    <div className="w-full bg-background min-h-screen pt-12 pb-24">
-      <div className="max-w-5xl mx-auto px-4">
+    <div className="w-full bg-[#F4F1EA] dark:bg-[#070E0B] min-h-screen pt-32 pb-24 relative overflow-hidden">
+      {/* Ambient glow orbs */}
+      <div className="pointer-events-none absolute -top-40 left-1/4 w-[500px] h-[500px] rounded-full bg-[#3DB86B]/07 dark:bg-[#3DB86B]/05 blur-[120px]" />
+      <div className="pointer-events-none absolute bottom-0 right-0 w-[450px] h-[450px] rounded-full bg-[#C97B4E]/05 dark:bg-[#C97B4E]/03 blur-[100px]" />
+
+      <div className="max-w-5xl mx-auto px-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-16 border-b border-border pb-8 text-center"
+          transition={{ duration: 0.7 }}
+          className="mb-16 pb-8 border-b border-[#DCE8DF] dark:border-[#1E3626] text-center"
         >
-          <h1 className="text-5xl md:text-6xl font-bold text-text font-heading mb-4">
-            Gatherings & <span className="italic text-primary">Events</span>
+          <span className="inline-block text-[11px] font-bold uppercase tracking-[0.22em] text-[#3DB86B] mb-4 px-3 py-1 rounded-full bg-[#3DB86B]/10 border border-[#3DB86B]/20">
+            Community Gatherings
+          </span>
+          <h1
+            className="text-5xl md:text-6xl font-extrabold text-[#1F3E2F] dark:text-white mb-4 tracking-tight"
+            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}
+          >
+            Gatherings &amp; <span className="text-[#3DB86B]">Events</span>
           </h1>
-          <p className="font-body text-text/70 /70 max-w-2xl mx-auto text-lg">
+          <p className="text-[#5B7566] dark:text-[#9CB3A6] max-w-2xl mx-auto text-lg font-medium">
             Join us in our celebrations, book launches, and cultural meets.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {isLoading ? (
-            <div className="col-span-full text-center text-text-secondary py-12">Loading events...</div>
+            <div className="col-span-full text-center text-[#9CB3A6] py-12">Loading events...</div>
           ) : error ? (
-            <div className="col-span-full text-center text-error py-12">Failed to load events.</div>
+            <div className="col-span-full text-center text-red-400 py-12">Failed to load events.</div>
           ) : (
             events?.map((event: any, idx: number) => (
               <EventCard key={event._id} event={event} index={idx} onEventClick={setSelectedEvent} />
