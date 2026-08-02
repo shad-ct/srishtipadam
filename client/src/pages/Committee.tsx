@@ -1,15 +1,19 @@
-import { motion } from 'framer-motion';
-import MemberCard from '../components/committee/MemberCard';
-import { useQuery } from '@tanstack/react-query';
-import axiosClient from '../api/axiosClient';
+import { motion } from "framer-motion";
+import MemberCard from "../components/committee/MemberCard";
+import { useQuery } from "@tanstack/react-query";
+import axiosClient from "../api/axiosClient";
 
 const Committee = () => {
-  const { data: committee, isLoading, error } = useQuery({
-    queryKey: ['committee'],
+  const {
+    data: committee,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["committee"],
     queryFn: async () => {
-      const { data } = await axiosClient.get('/committee');
+      const { data } = await axiosClient.get("/committee");
       return data;
-    }
+    },
   });
 
   return (
@@ -25,29 +29,36 @@ const Committee = () => {
           transition={{ duration: 0.7 }}
           className="mb-20 text-center"
         >
-          <span className="inline-block text-[11px] font-bold uppercase tracking-[0.22em] text-[#3DB86B] mb-4 px-3 py-1 rounded-full bg-[#3DB86B]/10 border border-[#3DB86B]/20">
-            The Team
-          </span>
           <h1
             className="text-5xl md:text-6xl font-extrabold text-[#1F3E2F] dark:text-white mb-6 tracking-tight relative inline-block"
-            style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}
+            style={{
+              fontFamily: "'Plus Jakarta Sans', sans-serif",
+              letterSpacing: "-0.02em",
+            }}
           >
             Our <span className="text-[#3DB86B]">Committee</span>
           </h1>
           <p className="text-[#5B7566] dark:text-[#9CB3A6] max-w-2xl mx-auto text-lg font-medium mt-4">
-            The dedicated minds behind Srishtipadham, working together to preserve and promote our literary heritage.
+            The dedicated minds behind Srishtipadham, working together to
+            preserve and promote our literary heritage.
           </p>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 gap-y-16">
           {isLoading ? (
-            <div className="col-span-full text-center text-[#9CB3A6] py-12">Loading committee...</div>
+            <div className="col-span-full text-center text-[#9CB3A6] py-12">
+              Loading committee...
+            </div>
           ) : error ? (
-            <div className="col-span-full text-center text-red-400 py-12">Failed to load committee.</div>
+            <div className="col-span-full text-center text-red-400 py-12">
+              Failed to load committee.
+            </div>
           ) : (
-            committee?.sort((a: any, b: any) => a.order - b.order).map((member: any, idx: number) => (
-              <MemberCard key={member._id} member={member} index={idx} />
-            ))
+            committee
+              ?.sort((a: any, b: any) => a.order - b.order)
+              .map((member: any, idx: number) => (
+                <MemberCard key={member._id} member={member} index={idx} />
+              ))
           )}
         </div>
       </div>
