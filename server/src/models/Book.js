@@ -9,7 +9,7 @@ const bookSchema = new mongoose.Schema({
     ml: { type: String },
     en: { type: String }
   },
-  coverImage: { type: String },
+  coverImage: { url: { type: String }, publicId: { type: String } },
   category: { type: String },
   inStock: { type: Boolean, default: true },
   featured: { type: Boolean, default: false }

@@ -45,15 +45,15 @@ export const Navbar = () => {
         <div className="flex justify-between items-center h-12 px-4">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 bg-[#1F3E2F] dark:bg-[#3DB86B] rounded-full flex items-center justify-center text-white font-extrabold text-base tracking-tight transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-[#3DB86B]/30"
-              style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-              S
+            <div className="w-9 h-9 rounded-full overflow-hidden flex-shrink-0 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg group-hover:shadow-[#3DB86B]/30"
+              style={{ border: '2px solid rgba(61,184,107,0.3)' }}>
+              <img src="/logo.png" alt="Srishtipadham logo" className="w-full h-full object-cover" />
             </div>
             <span
               className="text-[#1F3E2F] dark:text-white text-[20px] font-extrabold tracking-tight leading-none"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}
             >
-              Srishtipadam
+              Srishtipadham
             </span>
           </Link>
 
@@ -161,12 +161,17 @@ export const Navbar = () => {
           >
             {/* Drawer header */}
             <div className="p-5 flex justify-between items-center border-b border-[#E8E2D2] dark:border-[#24392C]">
-              <span
-                className="font-extrabold text-xl text-[#1F3E2F] dark:text-white tracking-tight"
-                style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}
-              >
-                Srishtipadam
-              </span>
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full overflow-hidden flex-shrink-0" style={{ border: '2px solid rgba(61,184,107,0.3)' }}>
+                  <img src="/logo.png" alt="Srishtipadham" className="w-full h-full object-cover" />
+                </div>
+                <span
+                  className="font-extrabold text-xl text-[#1F3E2F] dark:text-white tracking-tight"
+                  style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}
+                >
+                  Srishtipadham
+                </span>
+              </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="w-8 h-8 rounded-full flex items-center justify-center text-[#3B5A4B] dark:text-[#9DB3A6] hover:bg-[#1F3E2F]/08 transition-colors"

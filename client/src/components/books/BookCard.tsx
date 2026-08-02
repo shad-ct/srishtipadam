@@ -7,7 +7,7 @@ interface Book {
   name: { en?: string; ml?: string };
   writer: { en?: string; ml?: string };
   price: number;
-  coverImage?: { url: string };
+  coverImage?: { url: string; secure_url?: string } | string;
   category?: string;
 }
 
@@ -48,20 +48,25 @@ const BookCard: React.FC<BookCardProps> = ({ book, index }) => {
               style={{ transformOrigin: 'left center', transformStyle: 'preserve-3d' }}
             >
               <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-gradient-to-r from-black/35 to-transparent z-20 pointer-events-none rounded-l" />
-              {book.coverImage?.url ? (
-                <img
-                  src={book.coverImage.url}
-                  alt={book.name?.en || book.name?.ml || 'Unknown Title'}
-                  className="w-full h-full object-cover rounded-r-md opacity-90 group-hover:opacity-100 transition-opacity duration-300"
-                />
-              ) : (
-                <div className="w-full h-full bg-[#3DB86B]/10 dark:bg-[#3DB86B]/08 flex flex-col items-center justify-center p-4 rounded-r-md">
-                  <span className="font-bold text-lg text-[#3DB86B] text-center leading-snug"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    {book.name?.en || book.name?.ml || 'Untitled'}
-                  </span>
-                </div>
-              )}
+              {(() => {
+                const ci = book.coverImage;
+                const imgUrl = typeof ci === 'string' && ci.startsWith('http') ? ci
+                  : typeof ci === 'object' ? (ci?.url || (ci as any)?.secure_url) : null;
+                return imgUrl ? (
+                  <img
+                    src={imgUrl}
+                    alt={book.name?.en || book.name?.ml || 'Unknown Title'}
+                    className="w-full h-full object-cover rounded-r-md opacity-90 group-hover:opacity-100 transition-opacity duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[#3DB86B]/10 dark:bg-[#3DB86B]/08 flex flex-col items-center justify-center p-4 rounded-r-md">
+                    <span className="font-bold text-lg text-[#3DB86B] text-center leading-snug"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      {book.name?.en || book.name?.ml || 'Untitled'}
+                    </span>
+                  </div>
+                );
+              })()}
             </motion.div>
           </div>
 

@@ -109,8 +109,13 @@ const AdminBooks = () => {
       writer: { en: formData.get('writerEn'), ml: formData.get('writerMl') },
       category: formData.get('category'),
       price: Number(formData.get('price')),
+      pages: formData.get('pages') ? Number(formData.get('pages')) : undefined,
       featured: formData.get('featured') === 'on',
-      coverImage: coverImageUrl,
+      coverImage: coverImageUrl ? { url: coverImageUrl } : undefined,
+      description: {
+        en: formData.get('descEn') || '',
+        ml: formData.get('descMl') || '',
+      },
     };
 
     if (editingBook) {
@@ -239,6 +244,41 @@ const AdminBooks = () => {
           <div className="flex items-center gap-2 mt-2">
             <input type="checkbox" name="featured" id="featured" defaultChecked={editingBook?.featured} className="w-4 h-4" />
             <label htmlFor="featured" className="text-sm font-medium text-text-secondary">Mark as Featured</label>
+          </div>
+
+          {/* Pages */}
+          <div>
+            <label className="block text-sm font-medium text-text-secondary mb-1">Pages (optional)</label>
+            <input
+              name="pages"
+              type="number"
+              min="0"
+              defaultValue={editingBook?.pages || ''}
+              placeholder="e.g. 320"
+              className="w-full px-3 py-2 bg-surface border border-border rounded-md focus:border-primary focus:outline-none text-text dark:bg-gray-800 dark:text-white"
+            />
+          </div>
+
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-text-secondary mb-1">Description (English)</label>
+            <textarea
+              name="descEn"
+              rows={4}
+              defaultValue={editingBook?.description?.en || ''}
+              placeholder="Write a short description about the book in English..."
+              className="w-full px-3 py-2 bg-surface border border-border rounded-md focus:border-primary focus:outline-none text-text dark:bg-gray-800 dark:text-white resize-none"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-text-secondary mb-1">Description (Malayalam)</label>
+            <textarea
+              name="descMl"
+              rows={4}
+              defaultValue={editingBook?.description?.ml || ''}
+              placeholder="പുസ്തകത്തെ കുറിച്ച് മലയാളത്തിൽ ഒരു ചെറിയ വിവരണം എഴുതുക..."
+              className="w-full px-3 py-2 bg-surface border border-border rounded-md focus:border-primary focus:outline-none text-text dark:bg-gray-800 dark:text-white resize-none"
+            />
           </div>
           <div className="pt-4 flex justify-end gap-3 border-t border-border mt-6">
             <button 

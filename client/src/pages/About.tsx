@@ -16,7 +16,7 @@ const About = () => {
             className="text-5xl md:text-6xl font-extrabold text-[#1F3E2F] dark:text-white mb-6 tracking-tight"
             style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", letterSpacing: '-0.02em' }}
           >
-            About <span className="text-[#3DB86B]">Srishtipadam</span>
+            About <span className="text-[#3DB86B]">Srishtipadham</span>
           </h1>
           <p className="text-xl text-[#5B7566] dark:text-[#9CB3A6] max-w-2xl mx-auto font-medium leading-relaxed">
             A literary and cultural organization dedicated to promoting reading, writing, and a deep appreciation for nature.

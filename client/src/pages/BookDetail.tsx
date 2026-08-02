@@ -66,21 +66,27 @@ const BookDetail = () => {
               {/* Glory glow orb behind cover */}
               <div className="absolute -inset-4 bg-[#3DB86B]/08 dark:bg-[#3DB86B]/06 blur-2xl rounded-full pointer-events-none" />
               <div className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-black/15 to-transparent border-r border-[#DCE8DF] dark:border-[#1E3626] z-10 pointer-events-none" />
-              {book.coverImage?.url ? (
-                <img
-                  src={book.coverImage.url}
-                  alt={book.name?.en || book.name?.ml || 'Unknown Title'}
-                  className="w-full h-full object-cover rounded-r-sm opacity-95 hover:opacity-100 transition-opacity"
-                />
-              ) : (
-                <div className="w-full h-full bg-[#3DB86B]/10 flex flex-col items-center justify-center p-6 text-center">
-                  <span className="font-extrabold text-2xl text-[#3DB86B] mb-4 leading-snug"
-                    style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
-                    {book.name?.en || book.name?.ml || 'Unknown Title'}
-                  </span>
-                  <span className="text-[#9CB3A6] text-sm font-medium">{book.writer?.en || book.writer?.ml}</span>
-                </div>
-              )}
+              {/* Resolve coverImage from both string and {url} object shapes */}
+              {(() => {
+                const ci = book.coverImage;
+                const imgUrl = typeof ci === 'string' && ci.startsWith('http') ? ci
+                  : (ci?.url || ci?.secure_url || null);
+                return imgUrl ? (
+                  <img
+                    src={imgUrl}
+                    alt={book.name?.en || book.name?.ml || 'Unknown Title'}
+                    className="w-full h-full object-cover rounded-r-sm opacity-95 hover:opacity-100 transition-opacity"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[#3DB86B]/10 flex flex-col items-center justify-center p-6 text-center">
+                    <span className="font-extrabold text-2xl text-[#3DB86B] mb-4 leading-snug"
+                      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                      {book.name?.en || book.name?.ml || 'Unknown Title'}
+                    </span>
+                    <span className="text-[#9CB3A6] text-sm font-medium">{book.writer?.en || book.writer?.ml}</span>
+                  </div>
+                );
+              })()}
             </div>
           </motion.div>
 
