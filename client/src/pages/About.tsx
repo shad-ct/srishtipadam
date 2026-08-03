@@ -598,15 +598,6 @@ function DistrictModal({ group, onClose }: { group: any; onClose: () => void }) 
             <span style={{ fontSize: '13px', color: 'rgba(155,179,166,0.6)' }}>Admin contact not yet assigned</span>
           </div>
         )}
-
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          className="mt-3 w-full py-3 rounded-2xl text-sm font-semibold text-[#5B7566] dark:text-[#9CB3A6] hover:text-[#1F3E2F] dark:hover:text-white transition-colors duration-200"
-          style={{ background: 'transparent', border: '1px solid rgba(61,184,107,0.12)' }}
-        >
-          Close
-        </button>
       </motion.div>
     </motion.div>
   );
