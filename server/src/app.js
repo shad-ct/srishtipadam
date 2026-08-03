@@ -29,6 +29,7 @@ app.use('/api/committee', require('./routes/committeeRoutes'));
 app.use('/api/join', require('./routes/joinRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
 app.use('/api/settings', require('./routes/settingRoutes'));
+app.use('/api/district-groups', require('./routes/districtGroupRoutes'));
 
 // Global Error Handler
 app.use((err, req, res, next) => {

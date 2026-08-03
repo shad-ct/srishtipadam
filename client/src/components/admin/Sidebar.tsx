@@ -22,6 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
     { name: t('admin.manageEvents'), path: '/admin/events' },
     { name: t('admin.manageMagazines'), path: '/admin/magazines' },
     { name: t('admin.manageCommittee'), path: '/admin/committee' },
+    { name: 'About Section', path: '/admin/about' },
   ];
 
   return (

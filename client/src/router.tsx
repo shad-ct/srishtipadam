@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
+import ScrollToTopButton from './components/layout/ScrollToTopButton';
 
 import Home from './pages/Home';
 import Books from './pages/Books';
@@ -21,6 +22,7 @@ import AdminBooks from './pages/admin/AdminBooks';
 import AdminEvents from './pages/admin/AdminEvents';
 import AdminMagazines from './pages/admin/AdminMagazines';
 import AdminCommittee from './pages/admin/AdminCommittee';
+import AdminAbout from './pages/admin/AdminAbout';
 
 const PublicLayout = () => (
   <div className="flex flex-col min-h-screen">
@@ -29,6 +31,7 @@ const PublicLayout = () => (
       <Outlet />
     </main>
     <Footer />
+    <ScrollToTopButton />
   </div>
 );
 
@@ -67,6 +70,7 @@ const AppRouter = () => {
             <Route path="events" element={<AdminEvents />} />
             <Route path="magazines" element={<AdminMagazines />} />
             <Route path="committee" element={<AdminCommittee />} />
+            <Route path="about" element={<AdminAbout />} />
           </Route>
         </Routes>
       </BrowserRouter>

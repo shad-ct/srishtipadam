@@ -1,6 +1,8 @@
-import { useRef, useEffect, useState } from 'react';
-import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useRef, useEffect, useState, useCallback } from 'react';
+import { motion, useInView, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
+import axiosClient from '../api/axiosClient';
 
 /* ─── Animated Counter ───────────────────────────────────────────────────── */
 function Counter({ target, suffix = '' }: { target: number; suffix?: string }) {
@@ -237,9 +239,8 @@ const MilestoneNode = ({ inView, icon }: { inView: boolean; icon: React.ReactNod
     initial={{ scale: 0, opacity: 0 }}
     animate={inView ? { scale: 1, opacity: 1 } : {}}
     transition={{ duration: 0.5, delay: 0.15, type: 'spring', stiffness: 220 }}
-    className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center z-10"
+    className="relative flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center z-10 bg-white/95 dark:bg-[#070e0b]/95"
     style={{
-      background: 'rgba(7,14,11,0.92)',
       border: '1.5px solid rgba(61,184,107,0.45)',
       backdropFilter: 'blur(12px)',
       boxShadow: '0 0 18px rgba(61,184,107,0.28)',
@@ -372,6 +373,464 @@ function MilestoneCard({ m, index }: { m: typeof milestones[0]; index: number })
   );
 }
 
+
+
+/* ─── WhatsApp District Card ─────────────────────────────────────────────── */
+function DistrictCard({ group, onCardClick }: { group: any; onCardClick: (g: any) => void }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: '-40px' });
+  const [hovered, setHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setMousePos({
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    });
+  }, []);
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+      onClick={() => onCardClick(group)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      onMouseMove={handleMouseMove}
+      whileHover={{ scale: 1.06, y: -8, transition: { duration: 0.4, ease: [0.34, 1.56, 0.64, 1] } }}
+      className="relative cursor-pointer flex flex-col items-center overflow-hidden select-none"
+      style={{
+        borderRadius: '20px',
+        paddingTop: '22px',
+        paddingLeft: '16px',
+        paddingRight: '16px',
+        paddingBottom: '42px',
+        background: 'rgba(255,255,255,0.07)',
+        border: hovered ? '1px solid rgba(61,184,107,0.5)' : '1px solid rgba(61,184,107,0.18)',
+        backdropFilter: 'blur(18px)',
+        WebkitBackdropFilter: 'blur(18px)',
+        boxShadow: hovered
+          ? '0 20px 60px rgba(61,184,107,0.18), 0 0 0 1px rgba(61,184,107,0.12)'
+          : '0 8px 32px rgba(0,0,0,0.10)',
+        transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
+        minHeight: '160px',
+      }}
+    >
+      {/* Cursor-follow radial highlight */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-opacity duration-400 rounded-[20px]"
+        style={{
+          opacity: hovered ? 1 : 0,
+          background: `radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, rgba(61,184,107,0.12) 0%, transparent 65%)`,
+        }}
+      />
+
+      {/* Top shimmer line */}
+      <div
+        className="absolute top-0 left-4 right-4 h-px rounded-full pointer-events-none transition-opacity duration-400"
+        style={{
+          opacity: hovered ? 1 : 0,
+          background: 'linear-gradient(90deg, transparent, rgba(61,184,107,0.8), transparent)',
+        }}
+      />
+
+      {/* District icon */}
+      <div
+        className="w-10 h-10 rounded-2xl flex items-center justify-center mb-3 transition-all duration-400"
+        style={{
+          background: hovered ? 'rgba(61,184,107,0.18)' : 'rgba(61,184,107,0.09)',
+          border: '1px solid rgba(61,184,107,0.22)',
+        }}
+      >
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3DB86B" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+          <circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+
+      {/* District name */}
+      <p
+        className="text-[#1F3E2F] dark:text-white font-bold text-center leading-tight mb-1"
+        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '15px', letterSpacing: '-0.01em' }}
+      >
+        {group.district}
+      </p>
+      <p style={{ fontSize: '10px', fontWeight: 600, letterSpacing: '0.15em', color: '#3DB86B', textTransform: 'uppercase' }}>
+        District Unit
+      </p>
+
+      {/* WhatsApp icon fade in on hover */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 6 }}
+        transition={{ duration: 0.3 }}
+        className="absolute top-3 right-3"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="#25D366">
+          <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.333 4.993L2 22l5.13-1.347a9.96 9.96 0 0 0 4.887 1.277h.005c5.505 0 9.988-4.478 9.99-9.985A9.99 9.99 0 0 0 12.012 2zm4.957 14.238c-.273.767-1.561 1.405-2.146 1.483-.518.069-1.196.128-3.418-.79-2.842-1.173-4.673-4.057-4.814-4.244-.143-.186-1.144-1.52-1.144-2.9 0-1.38.718-2.06 1.023-2.358.304-.298.665-.373.886-.373.22 0 .443.003.638.012.2.01.472-.075.738.566.27.653.924 2.257 1.003 2.418.08.162.133.35.025.567-.108.217-.162.35-.325.538-.162.186-.34.417-.487.56-.162.155-.33.324-.14.653.19.324.843 1.393 1.807 2.253.963.86 1.77 1.127 2.09 1.286.32.16.507.133.696-.084.19-.217.81-.94.945-1.263.136-.324.27-.27.457-.2.187.072 1.186.56 1.39.66.204.1.34.15.39.233.05.084.05.483-.223 1.25z"/>
+        </svg>
+      </motion.div>
+
+      {/* Slide-up "Contact Admin" label */}
+      <motion.div
+        initial={false}
+        animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
+        transition={{ duration: 0.35, delay: 0.05 }}
+        className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-1 py-2 rounded-b-[20px]"
+        style={{ background: 'rgba(61,184,107,0.12)', borderTop: '1px solid rgba(61,184,107,0.2)' }}
+      >
+        <span style={{ fontSize: '10px', fontWeight: 700, color: '#3DB86B', letterSpacing: '0.08em' }}>
+          CONTACT ADMIN
+        </span>
+        <motion.span
+          animate={{ x: hovered ? 2 : 0 }}
+          transition={{ duration: 0.3 }}
+          style={{ color: '#3DB86B' }}
+        >
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </motion.span>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ─── District Modal ─────────────────────────────────────────────────────── */
+function DistrictModal({ group, onClose }: { group: any; onClose: () => void }) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => { window.removeEventListener('keydown', onKey); document.body.style.overflow = ''; };
+  }, [onClose]);
+
+  const hasNumber = group.whatsappNumber && group.whatsappNumber.trim() !== '';
+  const waLink = hasNumber ? `https://wa.me/91${group.whatsappNumber}` : null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={onClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-6"
+      style={{ background: 'rgba(7,14,11,0.55)', backdropFilter: 'blur(12px)' }}
+    >
+      <motion.div
+        initial={{ opacity: 0, scale: 0.88, y: 24 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.88, y: 24 }}
+        transition={{ type: 'spring', duration: 0.5, bounce: 0.3 }}
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-sm overflow-hidden cursor-default bg-white dark:bg-[#0f1c14]"
+        style={{
+          borderRadius: '28px',
+          border: '1px solid rgba(61,184,107,0.25)',
+          backdropFilter: 'blur(30px)',
+          WebkitBackdropFilter: 'blur(30px)',
+          boxShadow: '0 32px 80px rgba(0,0,0,0.2), 0 0 60px rgba(61,184,107,0.06)',
+          padding: '36px 32px 28px',
+        }}
+      >
+        {/* Glow */}
+        <div className="absolute -top-16 left-1/2 -translate-x-1/2 w-48 h-48 rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(61,184,107,0.2) 0%, transparent 70%)' }} />
+
+        {/* Close */}
+        <button onClick={onClose}
+          className="absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-colors"
+          style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+        {/* WhatsApp icon */}
+        <div className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-5 relative"
+          style={{ background: 'rgba(37,211,102,0.12)', border: '1px solid rgba(37,211,102,0.25)' }}>
+          <motion.div
+            animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0, 0.3] }}
+            transition={{ repeat: Infinity, duration: 2.2 }}
+            className="absolute inset-0 rounded-3xl"
+            style={{ background: 'rgba(37,211,102,0.15)' }}
+          />
+          <svg width="30" height="30" viewBox="0 0 24 24" fill="#25D366">
+            <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.333 4.993L2 22l5.13-1.347a9.96 9.96 0 0 0 4.887 1.277h.005c5.505 0 9.988-4.478 9.99-9.985A9.99 9.99 0 0 0 12.012 2zm4.957 14.238c-.273.767-1.561 1.405-2.146 1.483-.518.069-1.196.128-3.418-.79-2.842-1.173-4.673-4.057-4.814-4.244-.143-.186-1.144-1.52-1.144-2.9 0-1.38.718-2.06 1.023-2.358.304-.298.665-.373.886-.373.22 0 .443.003.638.012.2.01.472-.075.738.566.27.653.924 2.257 1.003 2.418.08.162.133.35.025.567-.108.217-.162.35-.325.538-.162.186-.34.417-.487.56-.162.155-.33.324-.14.653.19.324.843 1.393 1.807 2.253.963.86 1.77 1.127 2.09 1.286.32.16.507.133.696-.084.19-.217.81-.94.945-1.263.136-.324.27-.27.457-.2.187.072 1.186.56 1.39.66.204.1.34.15.39.233.05.084.05.483-.223 1.25z"/>
+          </svg>
+        </div>
+
+        {/* District name */}
+        <h3 className="text-[#1F3E2F] dark:text-white text-center font-extrabold mb-1"
+          style={{ fontSize: '22px', letterSpacing: '-0.02em', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+          {group.district}
+        </h3>
+        <p style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.18em', color: '#3DB86B', textTransform: 'uppercase', textAlign: 'center', marginBottom: '20px' }}>
+          District WhatsApp Unit
+        </p>
+
+        {/* Welcome message */}
+        <p className="text-center mb-6 text-[#5B7566] dark:text-[#9CB3A6]" style={{ fontSize: '14px', lineHeight: 1.6 }}>
+          Connect with our {group.district} district admin to join the local writers' community and participate in literary activities.
+        </p>
+
+        {/* CTA */}
+        {waLink ? (
+          <a
+            href={waLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center justify-center gap-3 w-full py-3.5 rounded-2xl font-bold text-white text-sm transition-all duration-300"
+            style={{ background: 'linear-gradient(135deg, #25D366, #128C7E)', boxShadow: '0 8px 24px rgba(37,211,102,0.25)' }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.012 2c-5.506 0-9.989 4.478-9.99 9.984a9.96 9.96 0 0 0 1.333 4.993L2 22l5.13-1.347a9.96 9.96 0 0 0 4.887 1.277h.005c5.505 0 9.988-4.478 9.99-9.985A9.99 9.99 0 0 0 12.012 2zm4.957 14.238c-.273.767-1.561 1.405-2.146 1.483-.518.069-1.196.128-3.418-.79-2.842-1.173-4.673-4.057-4.814-4.244-.143-.186-1.144-1.52-1.144-2.9 0-1.38.718-2.06 1.023-2.358.304-.298.665-.373.886-.373.22 0 .443.003.638.012.2.01.472-.075.738.566.27.653.924 2.257 1.003 2.418.08.162.133.35.025.567-.108.217-.162.35-.325.538-.162.186-.34.417-.487.56-.162.155-.33.324-.14.653.19.324.843 1.393 1.807 2.253.963.86 1.77 1.127 2.09 1.286.32.16.507.133.696-.084.19-.217.81-.94.945-1.263.136-.324.27-.27.457-.2.187.072 1.186.56 1.39.66.204.1.34.15.39.233.05.084.05.483-.223 1.25z"/>
+            </svg>
+            Contact the Admin
+          </a>
+        ) : (
+          <div className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+            <span style={{ fontSize: '13px', color: 'rgba(155,179,166,0.6)' }}>Admin contact not yet assigned</span>
+          </div>
+        )}
+
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="mt-3 w-full py-3 rounded-2xl text-sm font-semibold text-[#5B7566] dark:text-[#9CB3A6] hover:text-[#1F3E2F] dark:hover:text-white transition-colors duration-200"
+          style={{ background: 'transparent', border: '1px solid rgba(61,184,107,0.12)' }}
+        >
+          Close
+        </button>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ─── WhatsApp Floating Particle ─────────────────────────────────────────── */
+function WaParticle({ delay, x, y, size }: { delay: number; x: number; y: number; size: number }) {
+  return (
+    <motion.div
+      className="absolute rounded-full pointer-events-none"
+      style={{ left: `${x}%`, top: `${y}%`, width: size, height: size, background: 'rgba(37,211,102,0.12)' }}
+      animate={{ y: [-10, 10, -10], opacity: [0.4, 0.8, 0.4] }}
+      transition={{ duration: 4 + delay, repeat: Infinity, delay, ease: 'easeInOut' }}
+    />
+  );
+}
+
+/* ─── WhatsApp Community Section ─────────────────────────────────────────── */
+function WhatsAppCommunitySection() {
+  const { data: districts, isLoading } = useQuery({
+    queryKey: ['districtGroups'],
+    queryFn: async () => {
+      const { data } = await axiosClient.get('/district-groups');
+      return data;
+    }
+  });
+
+  const [selectedGroup, setSelectedGroup] = useState<any>(null);
+
+  const particles = [
+    { delay: 0, x: 5, y: 20, size: 6 },
+    { delay: 1.2, x: 90, y: 10, size: 8 },
+    { delay: 0.6, x: 15, y: 75, size: 5 },
+    { delay: 2, x: 80, y: 60, size: 7 },
+    { delay: 1.8, x: 50, y: 5, size: 4 },
+    { delay: 0.3, x: 70, y: 85, size: 6 },
+    { delay: 2.5, x: 30, y: 90, size: 5 },
+  ];
+
+  return (
+    <section className="relative px-6 py-24 overflow-hidden">
+      {/* Background effects */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(37,211,102,0.07) 0%, transparent 65%)', filter: 'blur(60px)' }} />
+        <div className="absolute bottom-0 right-1/4 w-72 h-72 rounded-full"
+          style={{ background: 'radial-gradient(circle, rgba(61,184,107,0.06) 0%, transparent 65%)', filter: 'blur(80px)' }} />
+        {/* Botanical line illustration */}
+        <svg className="absolute bottom-10 left-0 opacity-[0.04]" width="300" height="300" viewBox="0 0 300 300" fill="none">
+          <path d="M10 290 Q80 200 150 150 Q220 100 290 10" stroke="#3DB86B" strokeWidth="1"/>
+          <path d="M10 250 Q70 180 130 140 Q190 100 250 40" stroke="#3DB86B" strokeWidth="0.8"/>
+          <path d="M50 290 Q100 230 150 200" stroke="#3DB86B" strokeWidth="0.6"/>
+          <circle cx="150" cy="150" r="3" fill="#3DB86B"/>
+          <circle cx="80" cy="220" r="2" fill="#3DB86B"/>
+          <circle cx="220" cy="80" r="2" fill="#3DB86B"/>
+        </svg>
+        <svg className="absolute top-10 right-0 opacity-[0.04]" width="240" height="240" viewBox="0 0 240 240" fill="none">
+          <path d="M230 10 Q160 100 120 120 Q80 140 10 230" stroke="#3DB86B" strokeWidth="1"/>
+          <path d="M230 50 Q170 120 130 140 Q90 160 30 230" stroke="#3DB86B" strokeWidth="0.8"/>
+          <circle cx="120" cy="120" r="3" fill="#3DB86B"/>
+        </svg>
+        {/* Floating particles */}
+        {particles.map((p, i) => <WaParticle key={i} {...p} />)}
+      </div>
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-14"
+        >
+          <span className="inline-block text-[11px] font-bold uppercase tracking-[0.22em] text-[#25D366] mb-5 px-4 py-1.5 rounded-full"
+            style={{ background: 'rgba(37,211,102,0.1)', border: '1px solid rgba(37,211,102,0.22)' }}>
+            Community
+          </span>
+          <h2 className="text-[#1F3E2F] dark:text-white mb-4"
+            style={{ fontWeight: 800, fontSize: 'clamp(28px, 4vw, 44px)', letterSpacing: '-0.03em', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+            Our <span style={{ color: '#25D366' }}>WhatsApp</span> Community
+          </h2>
+          {/* Pull quote subtitle */}
+          <p className="mx-auto max-w-2xl mb-6 italic text-[#5B7566] dark:text-[#9CB3A6]"
+            style={{ fontSize: 'clamp(15px, 2vw, 18px)', fontFamily: 'Georgia, serif', lineHeight: 1.65 }}>
+            "Connecting writers across Kerala through daily literary discussions, competitions, mentorship, and creative collaboration."
+          </p>
+          <p className="mx-auto max-w-2xl text-[#5B7566] dark:text-[#9CB3A6]" style={{ fontSize: '16px', fontWeight: 500, lineHeight: 1.8 }}>
+            Our WhatsApp Community is a vibrant space where aspiring and experienced writers come together to learn, improve, and share their creativity. Members participate in daily literary discussions, receive writing guidance, and take part in various poetry and writing competitions organized throughout the year.
+          </p>
+        </motion.div>
+
+        {/* District Grid */}
+        {isLoading ? (
+          <div className="text-center py-16 text-[#9CB3A6]">Loading district groups...</div>
+        ) : districts && districts.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {districts.map((group: any, i: number) => (
+              <motion.div
+                key={group._id}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06 }}
+              >
+                <DistrictCard group={group} onCardClick={setSelectedGroup} />
+              </motion.div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16 text-[#9CB3A6]">
+            District groups will appear here once added by the admin.
+          </div>
+        )}
+      </div>
+
+      {/* District Modal */}
+      <AnimatePresence>
+        {selectedGroup && (
+          <DistrictModal group={selectedGroup} onClose={() => setSelectedGroup(null)} />
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
+
+/* ─── Facebook Community Section ─────────────────────────────────────────── */
+function FacebookCommunitySection() {
+  return (
+    <section className="relative px-6 py-20 overflow-hidden">
+      {/* Background glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 0 }}>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full"
+          style={{ background: 'radial-gradient(ellipse, rgba(24,119,242,0.06) 0%, transparent 65%)', filter: 'blur(60px)' }} />
+      </div>
+
+      <div className="max-w-4xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7 }}
+          className="rounded-3xl overflow-hidden"
+          style={{
+            background: 'rgba(255,255,255,0.06)',
+            border: '1px solid rgba(24,119,242,0.15)',
+            backdropFilter: 'blur(20px)',
+            padding: 'clamp(28px, 5vw, 52px)',
+          }}
+        >
+          <div className="flex flex-col md:flex-row items-center gap-10">
+            {/* Left: Facebook icon + glow */}
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              whileInView={{ scale: 1, opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="relative shrink-0"
+            >
+              <div className="w-24 h-24 rounded-3xl flex items-center justify-center relative"
+                style={{ background: 'rgba(24,119,242,0.12)', border: '1px solid rgba(24,119,242,0.25)' }}>
+                <motion.div
+                  animate={{ scale: [1, 1.4, 1], opacity: [0.3, 0, 0.3] }}
+                  transition={{ repeat: Infinity, duration: 2.5 }}
+                  className="absolute inset-0 rounded-3xl"
+                  style={{ background: 'rgba(24,119,242,0.15)' }}
+                />
+                <svg width="42" height="42" viewBox="0 0 24 24" fill="#1877F2">
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+              </div>
+            </motion.div>
+
+            {/* Right: content */}
+            <div className="flex-1 text-center md:text-left flex flex-col gap-4">
+              <h2 className="text-[#1F3E2F] dark:text-white"
+                style={{ fontWeight: 800, fontSize: 'clamp(22px, 3vw, 32px)', letterSpacing: '-0.025em', fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
+                Our <span style={{ color: '#1877F2' }}>Facebook</span> Community
+              </h2>
+              <p className="text-[#5B7566] dark:text-[#9CB3A6]" style={{ fontSize: '16px', fontWeight: 500, lineHeight: 1.8 }}>
+                Our Facebook Community is a welcoming platform where writers can share their literary works with thousands of readers. Once your request to join is approved by our administrators, you can publish your writings while following the community guidelines.
+              </p>
+              <p className="text-[#5B7566]/80 dark:text-[#9CB3A6]/80" style={{ fontSize: '15px', fontWeight: 500, lineHeight: 1.75 }}>
+                We regularly organize poetry competitions, creative writing activities, and literary discussions that encourage writers to improve their skills and receive recognition for outstanding contributions.
+              </p>
+
+              {/* CTA button */}
+              <div className="flex justify-center md:justify-start mt-2">
+                <motion.a
+                  href="https://www.facebook.com/groups/211210942820900/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.04, y: -3 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="group inline-flex items-center gap-3 px-7 py-3.5 rounded-full font-bold text-white text-[15px] transition-all duration-300 relative overflow-hidden"
+                  style={{
+                    background: 'linear-gradient(135deg, #1877F2 0%, #0d5bcc 100%)',
+                    boxShadow: '0 8px 28px rgba(24,119,242,0.28)',
+                  }}
+                >
+                  {/* Shimmer */}
+                  <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-800 ease-out" />
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  </svg>
+                  <span>Join Our Facebook Community</span>
+                  <motion.span
+                    animate={{ x: 0 }}
+                    whileHover={{ x: 3 }}
+                    transition={{ duration: 0.25 }}
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+                    </svg>
+                  </motion.span>
+                </motion.a>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
 /* ─── Main Component ─────────────────────────────────────────────────────── */
 const About = () => {
@@ -571,6 +1030,12 @@ const About = () => {
             </div>
           </div>
         </section>
+
+        {/* ── WHATSAPP COMMUNITY ───────────────────────────────────── */}
+        <WhatsAppCommunitySection />
+
+        {/* ── FACEBOOK COMMUNITY ──────────────────────────────────── */}
+        <FacebookCommunitySection />
 
         {/* ── SOCIAL LINKS ─────────────────────────────────────────── */}
         <section className="px-6 pb-32">
