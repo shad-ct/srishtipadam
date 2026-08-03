@@ -15,7 +15,7 @@ const AdminMagazines = () => {
   const queryClient = useQueryClient();
   const location = useLocation();
 
-  const [priceInput, setPriceInput] = useState('399');
+  const [priceInput, setPriceInput] = useState('150');
 
   useEffect(() => {
     if (location.state?.openAddModal) {
@@ -25,24 +25,24 @@ const AdminMagazines = () => {
   }, [location.state]);
 
   const { data: priceData, refetch: refetchPrice } = useQuery({
-    queryKey: ['annualEditionPrice'],
+    queryKey: ['quarterlyMagazinePrice'],
     queryFn: async () => {
-      const { data } = await axiosClient.get('/settings/annualEditionPrice');
+      const { data } = await axiosClient.get('/settings/quarterlyMagazinePrice');
       return data;
     }
   });
 
   useEffect(() => {
     if (priceData) {
-      setPriceInput(priceData.value || '399');
+      setPriceInput(priceData.value || '150');
     }
   }, [priceData]);
 
   const updatePriceMutation = useMutation({
-    mutationFn: (newPrice: string) => axiosClient.put('/settings/annualEditionPrice', { value: newPrice }),
+    mutationFn: (newPrice: string) => axiosClient.put('/settings/quarterlyMagazinePrice', { value: newPrice }),
     onSuccess: () => {
       refetchPrice();
-      alert('Annual Edition Price updated successfully!');
+      alert('Quarterly Magazine Price updated successfully!');
     }
   });
 
@@ -162,11 +162,11 @@ const AdminMagazines = () => {
         </button>
       </div>
 
-      {/* Annual Edition Price Settings Card */}
+      {/* Quarterly Magazine Price Settings Card */}
       <div className="bg-[#ffffff]/5 backdrop-blur-sm border border-border p-6 rounded-2xl mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h3 className="text-lg font-bold text-text mb-1">Annual Edition Price</h3>
-          <p className="text-text-secondary text-xs">Set the price of the Printed Annual Edition shown on the Magazines page.</p>
+          <h3 className="text-lg font-bold text-text mb-1">Quarterly Magazine Price</h3>
+          <p className="text-text-secondary text-xs">Set the price of the Printed Quarterly Magazine shown on the Magazines page.</p>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-text font-bold text-lg">₹</span>
@@ -175,7 +175,7 @@ const AdminMagazines = () => {
             value={priceInput}
             onChange={(e) => setPriceInput(e.target.value)}
             className="w-28 px-3 py-2 bg-surface border border-border rounded-md text-text font-semibold text-center focus:outline-none focus:ring-2 focus:ring-primary"
-            placeholder="399"
+            placeholder="150"
           />
           <button
             onClick={() => updatePriceMutation.mutate(priceInput)}
@@ -191,7 +191,7 @@ const AdminMagazines = () => {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={editingMag ? t('admin.editMagazine') : t('admin.addMagazine')}>
         <form onSubmit={handleSave} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">Title (EN)</label>
               <input name="titleEn" defaultValue={editingMag?.title?.en || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" required />
@@ -201,7 +201,7 @@ const AdminMagazines = () => {
               <input name="titleMl" defaultValue={editingMag?.title?.ml || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.issueNumber')}</label>
               <input name="issueNumber" defaultValue={editingMag?.issueNumber || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" required />
@@ -212,7 +212,7 @@ const AdminMagazines = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">Number of Pages</label>
               <input name="pages" type="number" min="1" defaultValue={editingMag?.pages || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" />

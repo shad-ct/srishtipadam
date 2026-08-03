@@ -162,7 +162,8 @@ const Home = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.28 }}
-          className="relative z-10 text-lg md:text-xl text-[#3B5A4B] dark:text-[#9DB3A6] mb-10 font-medium tracking-wide max-w-md"
+          className="relative z-10 text-lg sm:text-[22px] text-[#1F3E2F] dark:text-white mb-10 leading-relaxed max-w-xl"
+          style={{ fontWeight: 700, letterSpacing: '0.01em', fontFamily: 'Georgia, serif' }}
         >
           സർഗ്ഗാത്മകതയ്ക്കൊരു സമഗ്രാവിഷ്കാരം
         </motion.p>
@@ -340,13 +341,6 @@ const Home = () => {
                             <span style={{ fontFamily: "'Plus Jakarta Sans', sans-serif", fontSize: '15px', fontWeight: 800, color: '#ffffff', letterSpacing: '-0.01em' }}>
                               ₹{book.price || 0}
                             </span>
-                            <div className="flex items-center gap-1">
-                              {[1,2,3,4,5].map(s => (
-                                <svg key={s} width="10" height="10" viewBox="0 0 24 24" fill={s <= 4 ? '#3DB86B' : 'none'} stroke="#3DB86B" strokeWidth="2">
-                                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                                </svg>
-                              ))}
-                            </div>
                           </div>
                         </div>
                       </motion.div>

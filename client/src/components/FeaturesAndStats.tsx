@@ -257,7 +257,7 @@ const STAT_CARDS = [
 ];
 
 /* ─── Single stat card ───────────────────────────────────────────────────── */
-function StatCard({ card, index, statsInView }: { card: typeof STAT_CARDS[0]; index: number; statsInView: boolean }) {
+function StatCard({ card, index, statsInView, isDark }: { card: typeof STAT_CARDS[0]; index: number; statsInView: boolean; isDark: boolean }) {
   const [count, setCount] = useState(0);
   useEffect(() => {
     if (!statsInView) return;
@@ -284,8 +284,8 @@ function StatCard({ card, index, statsInView }: { card: typeof STAT_CARDS[0]; in
       whileHover={{ y: -8, transition: { duration: 0.3 } }}
       className="group relative rounded-3xl p-7 text-center cursor-default"
       style={{
-        background: 'rgba(255,255,255,0.06)',
-        border: '1px solid rgba(61,184,107,0.13)',
+        background: isDark ? 'rgba(255,255,255,0.06)' : 'rgba(255,255,255,0.5)',
+        border: isDark ? '1px solid rgba(61,184,107,0.13)' : '1px solid rgba(61,184,107,0.22)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         boxShadow: '0 4px 30px rgba(0,0,0,0.08)',
@@ -316,16 +316,28 @@ function StatCard({ card, index, statsInView }: { card: typeof STAT_CARDS[0]; in
 
       {/* Label */}
       <p
-        className="dark:text-[rgba(155,179,166,0.75)]"
-        style={{ fontSize: '14px', color: 'rgba(31,62,47,0.75)', fontWeight: 600, marginTop: '8px', lineHeight: 1.3, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+        style={{
+          fontSize: '14px',
+          color: isDark ? 'rgba(155,179,166,0.85)' : 'rgba(31,62,47,0.75)',
+          fontWeight: 600,
+          marginTop: '8px',
+          lineHeight: 1.3,
+          fontFamily: "'Plus Jakarta Sans', sans-serif"
+        }}
       >
         {card.label}
       </p>
 
       {/* Sublabel */}
       <p
-        className="dark:text-[rgba(155,179,166,0.5)]"
-        style={{ fontSize: '12px', color: 'rgba(91,117,102,0.6)', fontWeight: 400, marginTop: '4px', lineHeight: 1.4, fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+        style={{
+          fontSize: '12px',
+          color: isDark ? 'rgba(155,179,166,0.55)' : 'rgba(91,117,102,0.6)',
+          fontWeight: 400,
+          marginTop: '4px',
+          lineHeight: 1.4,
+          fontFamily: "'Plus Jakarta Sans', sans-serif"
+        }}
       >
         {card.sublabel}
       </p>
@@ -428,7 +440,7 @@ export const FeaturesAndStats = () => {
         {/* ─── Stats grid — 4 cards matching About page ─── */}
         <div ref={statsRef} className="grid grid-cols-2 lg:grid-cols-4 gap-5 px-4">
           {STAT_CARDS.map((card, i) => (
-            <StatCard key={i} card={card} index={i} statsInView={statsInView} />
+            <StatCard key={i} card={card} index={i} statsInView={statsInView} isDark={isDark} />
           ))}
         </div>
       </div>        {/* end max-w container */}

@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
 
@@ -31,10 +32,20 @@ const PublicLayout = () => (
   </div>
 );
 
+// Scroll to top helper component on route change
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+};
+
 const AppRouter = () => {
   return (
     <AdminAuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />

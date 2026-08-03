@@ -13,7 +13,9 @@ const getSetting = asyncHandler(async (req, res) => {
   } else {
     // Return a default value instead of 404 for ease of frontend consumption
     let defaultValue = '';
-    if (key === 'annualEditionPrice') {
+    if (key === 'quarterlyMagazinePrice') {
+      defaultValue = '150';
+    } else if (key === 'annualEditionPrice') {
       defaultValue = '399';
     }
     res.json({ key, value: defaultValue });

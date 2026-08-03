@@ -158,7 +158,7 @@ const AdminBooks = () => {
           {/* Cover Image Upload */}
           <div>
             <label className="block text-sm font-medium text-text-secondary mb-1">Cover Image</label>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               {coverImageUrl && (
                 <img src={coverImageUrl} alt="Cover Preview" className="w-16 h-24 object-cover rounded-md border border-border" />
               )}
@@ -175,7 +175,7 @@ const AdminBooks = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.title')} (EN)</label>
               <input 
@@ -194,7 +194,7 @@ const AdminBooks = () => {
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.author')} (EN)</label>
               <input 

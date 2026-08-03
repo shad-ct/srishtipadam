@@ -21,6 +21,27 @@ const BookDetail = () => {
     }
   });
 
+  const handleOrderCopy = () => {
+    if (!book) return;
+    const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '919446771277';
+    const bookName = book.name?.en || book.name?.ml || 'Unknown Book';
+    const authorName = book.writer?.en || book.writer?.ml || 'Unknown Author';
+    const priceValue = book.price ? `₹${book.price}` : 'Unknown';
+
+    const message = `I would like to order the following book from Srishtipadam Publications.
+
+Book Name: ${bookName}
+Author: ${authorName}
+Price: ${priceValue}
+
+Kindly provide me with the payment procedure, delivery details, and the estimated delivery time.
+
+Thank you!`;
+
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   if (isLoading) {
     return (
       <div className="w-full min-h-[70vh] flex items-center justify-center bg-[#F4F1EA] dark:bg-[#070E0B]">
@@ -136,6 +157,7 @@ const BookDetail = () => {
                   style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>₹{book.price}</span>
               </div>
               <button
+                onClick={handleOrderCopy}
                 className="w-full sm:w-auto text-white font-bold text-base px-10 py-4 rounded-full transition-all duration-300 hover:scale-[1.04] hover:shadow-xl active:scale-95"
                 style={{
                   fontFamily: "'Plus Jakarta Sans', sans-serif",

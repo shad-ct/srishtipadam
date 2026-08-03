@@ -162,7 +162,7 @@ const AdminEvents = () => {
         title={editingEvent ? t('admin.editEvent') : t('admin.createEvent')}
       >
         <form onSubmit={handleSave} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.eventNameEn')}</label>
               <input name="nameEn" defaultValue={editingEvent?.name?.en || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" required />
@@ -172,7 +172,7 @@ const AdminEvents = () => {
               <input name="nameMl" defaultValue={editingEvent?.name?.ml || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.locationEn')}</label>
               <input name="placeEn" defaultValue={editingEvent?.place?.en || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" required />
@@ -182,7 +182,7 @@ const AdminEvents = () => {
               <input name="placeMl" defaultValue={editingEvent?.place?.ml || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">Description (EN)</label>
               <textarea name="descriptionEn" defaultValue={editingEvent?.description?.en || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text h-24 resize-y" />
@@ -192,14 +192,14 @@ const AdminEvents = () => {
               <textarea name="descriptionMl" defaultValue={editingEvent?.description?.ml || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text h-24 resize-y" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.date')}</label>
               <input name="date" type="date" defaultValue={editingEvent?.date ? new Date(editingEvent.date).toISOString().split('T')[0] : ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" required />
             </div>
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.time')}</label>
-              <input name="time" type="time" defaultValue={editingEvent?.time || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" />
+              <input name="time" type="text" placeholder="e.g. 10:00 AM" defaultValue={editingEvent?.time || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text" />
             </div>
           </div>
           <div className="flex items-center gap-2 mt-4">

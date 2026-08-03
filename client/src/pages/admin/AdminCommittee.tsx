@@ -165,7 +165,7 @@ const AdminCommittee = () => {
           {/* Image Upload */}
           <div>
             <label className="block text-sm font-medium text-text-secondary mb-1">Profile Image</label>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
               {imageUrl && (
                 <img src={imageUrl} alt="Preview" className="w-16 h-16 object-cover rounded-full border border-border" />
               )}
@@ -182,7 +182,7 @@ const AdminCommittee = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.name')} (EN)</label>
               <input name="nameEn" defaultValue={editingMember?.name?.en || (typeof editingMember?.name === 'string' ? editingMember?.name : '') || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" required />
@@ -192,7 +192,7 @@ const AdminCommittee = () => {
               <input name="nameMl" defaultValue={editingMember?.name?.ml || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">{t('admin.roleEn')}</label>
               <input name="roleEn" defaultValue={editingMember?.role?.en || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" required />
@@ -203,7 +203,7 @@ const AdminCommittee = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-text-secondary mb-1">Phone Number</label>
               <input name="phoneNumber" type="tel" maxLength={10} defaultValue={editingMember?.phoneNumber || ''} className="w-full px-3 py-2 bg-surface border border-border rounded-md text-text dark:bg-gray-800 dark:text-white" />

@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useInView, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 /* ─── Animated Counter ───────────────────────────────────────────────────── */
 function Counter({ target, suffix = '' }: { target: number; suffix?: string }) {
@@ -26,7 +27,9 @@ const milestones = [
   {
     year: '2018',
     title: 'Founded',
+    titleMl: 'ആരംഭം',
     desc: 'Started as a Facebook literary community bringing together writers and readers across Kerala.',
+    descMl: 'കേരളത്തിലെ എഴുത്തുകാരെയും വായനക്കാരെയും ഒന്നിപ്പിക്കുന്നതിനായി ഒരു ഫേസ്ബുക്ക് സാഹിത്യ കൂട്ടായ്മയായി ആരംഭിച്ചു.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -39,7 +42,9 @@ const milestones = [
   {
     year: '2021',
     title: 'Official Registration',
+    titleMl: 'ഔദ്യോഗിക രജിസ്ട്രേഷൻ',
     desc: 'Registered as a literary and cultural organization, gaining formal recognition.',
+    descMl: 'ഒരു സാഹിത്യ-സാംസ്കാരിക സംഘടനയായി രജിസ്റ്റർ ചെയ്യുകയും ഔദ്യോഗിക അംഗീകാരം നേടുകയും ചെയ്തു.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -51,7 +56,9 @@ const milestones = [
   {
     year: '2023',
     title: 'District Expansion',
+    titleMl: 'ജില്ലാ വ്യാപ്തി',
     desc: 'District units established across Kerala, forming a statewide literary network.',
+    descMl: 'കേരളത്തിലുടനീളം ജില്ലാ ഘടകങ്ങൾ സ്ഥാപിക്കുകയും സംസ്ഥാനവ്യാപകമായ സാഹിത്യ ശൃംഖല രൂപീകരിക്കുകയും ചെയ്തു.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <circle cx="12" cy="12" r="10"/>
@@ -61,8 +68,10 @@ const milestones = [
   },
   {
     year: '2025',
-    title: 'Printed Annual Edition',
-    desc: 'First printed annual edition officially launched, marking a new chapter in publishing.',
+    title: 'Printed Quarterly Magazine',
+    titleMl: 'ത്രൈമാസിക',
+    desc: 'First printed quarterly magazine officially launched, marking a new chapter in publishing.',
+    descMl: 'ആദ്യത്തെ അച്ചടിച്ച ത്രൈമാസിക പതിപ്പ് ഔദ്യോഗികമായി പുറത്തിറക്കി, പ്രസിദ്ധീകരണ രംഗത്ത് പുതിയ അധ്യായം കുറിച്ചു.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
@@ -73,7 +82,9 @@ const milestones = [
   {
     year: 'Present',
     title: 'Growing Every Day',
+    titleMl: 'ദിനംപ്രതി വളരുന്നു',
     desc: 'Publications, Digital Magazine, YouTube, literary competitions, and a thriving statewide community.',
+    descMl: 'നിരവധി പുസ്തകങ്ങൾ, ഡിജിറ്റൽ മാഗസിൻ, യൂട്യൂബ് ചാനൽ, സാഹിത്യ മത്സരങ്ങൾ, ഒപ്പം സജീവമായ ഒരു വലിയ സംസ്ഥാനവ്യാപക കൂട്ടായ്മ.',
     icon: (
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
@@ -86,7 +97,9 @@ const milestones = [
 /* ─── Highlight Cards ────────────────────────────────────────────────────── */
 const highlights = [
   {
-    num: 75, suffix: '+', label: 'Books Published',
+    num: 75, suffix: '+',
+    label: 'Books Published',
+    labelMl: 'പ്രസിദ്ധീകരിച്ച പുസ്തകങ്ങൾ',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
@@ -94,7 +107,9 @@ const highlights = [
     ),
   },
   {
-    num: 20000, suffix: '+', label: 'Community Members',
+    num: 20000, suffix: '+',
+    label: 'Community Members',
+    labelMl: 'കൂട്ടായ്മയിലെ അംഗങ്ങൾ',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
@@ -103,7 +118,9 @@ const highlights = [
     ),
   },
   {
-    num: 51, suffix: '-Day', label: 'Signature Poetry Challenge',
+    num: 51, suffix: '-Day',
+    label: 'Signature Poetry Challenge',
+    labelMl: 'കവിതാ മത്സരം',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
@@ -111,7 +128,9 @@ const highlights = [
     ),
   },
   {
-    num: 12, suffix: '/yr', label: 'Monthly Digital Magazine',
+    num: 12, suffix: '/yr',
+    label: 'Monthly Digital Magazine',
+    labelMl: 'മാസിക ഡിജിറ്റൽ പതിപ്പുകൾ',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
         <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/>
@@ -124,7 +143,7 @@ const highlights = [
 const socials = [
   {
     label: 'Facebook',
-    href: 'https://facebook.com/srishtipadham',
+    href: 'https://www.facebook.com/groups/211210942820900/',
     color: '#1877F2',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -134,7 +153,7 @@ const socials = [
   },
   {
     label: 'Instagram',
-    href: 'https://instagram.com/srishtipadham',
+    href: 'https://www.instagram.com/srishtipadham_publications?igsh=cXhrbjM3Z200bWpi',
     color: '#E1306C',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -144,7 +163,7 @@ const socials = [
   },
   {
     label: 'YouTube',
-    href: 'https://youtube.com/@srishtipadham',
+    href: 'https://www.youtube.com/@srishtipadhammedia9488?si=l7WIFFYR6IMdGhUJ',
     color: '#FF0000',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -236,25 +255,33 @@ const MilestoneNode = ({ inView, icon }: { inView: boolean; icon: React.ReactNod
   </motion.div>
 );
 
-const CardContent = ({ m }: { m: typeof milestones[0] }) => (
-  <>
-    <span
-      className="inline-block text-[10px] font-bold uppercase tracking-[0.18em] px-3 py-1 rounded-full mb-3"
-      style={{ background: 'rgba(61,184,107,0.12)', border: '1px solid rgba(61,184,107,0.25)', color: '#3DB86B', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-    >
-      {m.year}
-    </span>
-    <h3
-      className="text-[#1F3E2F] dark:text-white font-bold text-base sm:text-lg mb-2 leading-tight"
-      style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
-    >
-      {m.title}
-    </h3>
-    <p className="text-sm leading-relaxed text-[#5B7566] dark:text-[#9CB3A6]">
-      {m.desc}
-    </p>
-  </>
-);
+const CardContent = ({ m }: { m: typeof milestones[0] }) => {
+  const { i18n } = useTranslation();
+  const isMl = i18n.language === 'ml';
+  const title = isMl ? m.titleMl : m.title;
+  const desc = isMl ? m.descMl : m.desc;
+  const yearLabel = isMl && m.year === 'Present' ? 'നിലവിൽ' : m.year;
+
+  return (
+    <>
+      <span
+        className="inline-block text-[10px] font-bold uppercase tracking-[0.18em] px-3 py-1 rounded-full mb-3"
+        style={{ background: 'rgba(61,184,107,0.12)', border: '1px solid rgba(61,184,107,0.25)', color: '#3DB86B', fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+      >
+        {yearLabel}
+      </span>
+      <h3
+        className="text-[#1F3E2F] dark:text-white font-bold text-base sm:text-lg mb-2 leading-tight"
+        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
+      >
+        {title}
+      </h3>
+      <p className="text-sm leading-relaxed text-[#5B7566] dark:text-[#9CB3A6]">
+        {desc}
+      </p>
+    </>
+  );
+};
 
 function MilestoneCard({ m, index }: { m: typeof milestones[0]; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -348,6 +375,9 @@ function MilestoneCard({ m, index }: { m: typeof milestones[0]; index: number })
 
 /* ─── Main Component ─────────────────────────────────────────────────────── */
 const About = () => {
+  const { i18n } = useTranslation();
+  const isMl = i18n.language === 'ml';
+
   return (
     <div className="w-full bg-[#F4F1EA] dark:bg-[#070E0B] min-h-screen relative overflow-hidden" style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}>
 
@@ -370,16 +400,17 @@ const About = () => {
               <motion.div animate={{ opacity: [0.4, 1, 0.4] }} transition={{ repeat: Infinity, duration: 2.5 }}
                 className="w-2 h-2 rounded-full bg-[#3DB86B]" style={{ boxShadow: '0 0 8px rgba(61,184,107,0.9)' }} />
               <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.2em', textTransform: 'uppercase', color: '#3DB86B' }}>
-                Who We Are
+                {isMl ? 'ഞങ്ങൾ ആരാണ്' : 'Who We Are'}
               </span>
             </div>
             <h1 className="text-[#1F3E2F] dark:text-white mb-6"
               style={{ fontWeight: 800, fontSize: 'clamp(40px, 6vw, 72px)', lineHeight: 1.05, letterSpacing: '-0.03em' }}>
               About <span style={{ color: '#3DB86B' }}>Srishtipadham</span>
             </h1>
-            <p className="max-w-2xl mx-auto" style={{ fontSize: '18px', lineHeight: 1.75, color: 'rgba(91,117,102,0.85)', fontWeight: 400 }}
-              className="dark:!text-[rgba(155,179,166,0.75)] max-w-2xl mx-auto">
-              From a humble Facebook literary community to one of Kerala's growing literary organizations, empowering writers and preserving Malayalam literature.
+            <p className="max-w-2xl mx-auto dark:!text-[rgba(155,179,166,0.75)]" style={{ fontSize: '18px', lineHeight: 1.75, color: 'rgba(91,117,102,0.85)', fontWeight: 400 }}>
+              {isMl
+                ? 'എഴുത്തുകാരെ പിന്തുണയ്ക്കാനും മലയാള സാഹിത്യം പ്രോത്സാഹിപ്പിക്കാനുമായി ആരംഭിച്ച സാംസ്കാരിക കൂട്ടായ്മയാണ് സൃഷ്ടിപഥം. ഏറ്റവും കുറഞ്ഞ ചെലവിൽ മികച്ച ഗുണമേന്മയോടെ സാധാരണക്കാരായ എഴുത്തുകാരുടെ പുസ്തകങ്ങൾ പ്രസിദ്ധീകരിച്ചുകൊണ്ട് പബ്ലിക്കേഷൻസ് രംഗത്തും ഞങ്ങൾ സജീവമാണ്.'
+                : "From a humble Facebook literary community to one of Kerala's growing literary organizations, empowering writers and preserving Malayalam literature."}
             </p>
           </motion.div>
         </section>
@@ -396,7 +427,7 @@ const About = () => {
             >
               <h2 className="text-[#1F3E2F] dark:text-white"
                 style={{ fontWeight: 800, fontSize: 'clamp(28px, 4vw, 44px)', letterSpacing: '-0.025em' }}>
-                Our Journey
+                {isMl ? 'ഞങ്ങളുടെ യാത്ര' : 'Our Journey'}
               </h2>
               <div className="mt-3 mx-auto w-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(61,184,107,0.6), transparent)' }} />
             </motion.div>
@@ -431,11 +462,13 @@ const About = () => {
             >
               <h2 className="text-[#1F3E2F] dark:text-white mb-6"
                 style={{ fontWeight: 800, fontSize: 'clamp(28px, 4vw, 44px)', letterSpacing: '-0.025em' }}>
-                Our Story
+                {isMl ? 'ഞങ്ങളുടെ ചരിത്രം' : 'Our Story'}
               </h2>
               <p style={{ fontSize: '17px', lineHeight: 1.85, color: 'rgba(91,117,102,0.85)', fontWeight: 400 }}
                 className="dark:!text-[rgba(155,179,166,0.75)] mb-14">
-                Srishtipadham is a literary organization dedicated to nurturing creativity and promoting Malayalam language and literature. Founded in 2018, it has grown from a Facebook literary community into a vibrant platform connecting thousands of writers, readers, and literature enthusiasts across Kerala.
+                {isMl
+                  ? 'സ്വന്തം അക്ഷരങ്ങൾക്ക് അച്ചടിമഷി പുരളുക എന്ന എഴുത്തുകാരുടെ സ്വപ്നം സാക്ഷാത്കരിക്കാൻ സാധാരണക്കാരന്റെ സ്വന്തം പബ്ലിക്കേഷനായി നിലകൊള്ളുന്നതാണ് സൃഷ്ടിപഥം പബ്ലിക്കേഷൻസ്. ഏറ്റവും കുറഞ്ഞ ചെലവിൽ മികച്ച ഗുണമേന്മയിൽ ഇതിനോടകം 75-ൽ പരം പുസ്തകങ്ങൾ പ്രകാശനം ചെയ്യാൻ ഞങ്ങൾക്ക് സാധിച്ചിട്ടുണ്ട്. ഈ നീണ്ട ഏഴ് വർഷത്തെ യാത്രയിൽ കേരളത്തിലുടനീളമുള്ള ഒരുപറ്റം സാരഥികളുടെ അക്ഷീണമായ പ്രവർത്തനങ്ങളും, വായനക്കാരായ നിങ്ങളുടെ സ്നേഹവുമാണ് സൃഷ്ടിപഥത്തിന്റെ വിജയത്തിന്റെ രഹസ്യം.'
+                  : 'Srishtipadham is a literary organization dedicated to nurturing creativity and promoting Malayalam language and literature. Founded in 2018, it has grown from a Facebook literary community into a vibrant platform connecting thousands of writers, readers, and literature enthusiasts across Kerala.'}
               </p>
             </motion.div>
 

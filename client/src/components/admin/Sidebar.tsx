@@ -25,7 +25,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onClose }) => {
   ];
 
   return (
-    <aside className="w-64 bg-surface-raised border-r border-border flex flex-col h-full md:h-screen sticky top-0 shadow-lg md:shadow-none">
+    <aside className="w-64 bg-surface-raised border-l border-border md:border-r md:border-l-0 flex flex-col h-full md:h-screen sticky top-0 shadow-lg md:shadow-none">
       <div className="p-6 border-b border-border flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-heading font-bold text-primary">Srishtipadham</h2>
