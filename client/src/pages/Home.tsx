@@ -164,7 +164,7 @@ const Home = () => {
           transition={{ duration: 0.7, delay: 0.28 }}
           className="relative z-10 text-lg md:text-xl text-[#3B5A4B] dark:text-[#9DB3A6] mb-10 font-medium tracking-wide max-w-md"
         >
-          Empowering Writers, Preserving Literature
+          സർഗ്ഗാത്മകതയ്ക്കൊരു സമഗ്രാവിഷ്കാരം
         </motion.p>
 
         {/* CTA Buttons — matching reference image style */}

@@ -15,12 +15,36 @@ const AdminMagazines = () => {
   const queryClient = useQueryClient();
   const location = useLocation();
 
+  const [priceInput, setPriceInput] = useState('399');
+
   useEffect(() => {
     if (location.state?.openAddModal) {
       handleAddNew();
       window.history.replaceState({}, document.title);
     }
   }, [location.state]);
+
+  const { data: priceData, refetch: refetchPrice } = useQuery({
+    queryKey: ['annualEditionPrice'],
+    queryFn: async () => {
+      const { data } = await axiosClient.get('/settings/annualEditionPrice');
+      return data;
+    }
+  });
+
+  useEffect(() => {
+    if (priceData) {
+      setPriceInput(priceData.value || '399');
+    }
+  }, [priceData]);
+
+  const updatePriceMutation = useMutation({
+    mutationFn: (newPrice: string) => axiosClient.put('/settings/annualEditionPrice', { value: newPrice }),
+    onSuccess: () => {
+      refetchPrice();
+      alert('Annual Edition Price updated successfully!');
+    }
+  });
 
   const { data: magazines, isLoading } = useQuery({
     queryKey: ['adminMagazines'],
@@ -136,6 +160,31 @@ const AdminMagazines = () => {
         <button onClick={handleAddNew} className="bg-primary hover:bg-primary-hover text-surface-raised font-medium px-4 py-2 rounded-md transition-colors">
           {t('admin.addMagazine')}
         </button>
+      </div>
+
+      {/* Annual Edition Price Settings Card */}
+      <div className="bg-[#ffffff]/5 backdrop-blur-sm border border-border p-6 rounded-2xl mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div>
+          <h3 className="text-lg font-bold text-text mb-1">Annual Edition Price</h3>
+          <p className="text-text-secondary text-xs">Set the price of the Printed Annual Edition shown on the Magazines page.</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="text-text font-bold text-lg">₹</span>
+          <input
+            type="number"
+            value={priceInput}
+            onChange={(e) => setPriceInput(e.target.value)}
+            className="w-28 px-3 py-2 bg-surface border border-border rounded-md text-text font-semibold text-center focus:outline-none focus:ring-2 focus:ring-primary"
+            placeholder="399"
+          />
+          <button
+            onClick={() => updatePriceMutation.mutate(priceInput)}
+            disabled={updatePriceMutation.isPending}
+            className="bg-primary hover:bg-primary-hover text-surface-raised font-semibold px-4 py-2 rounded-md transition-colors text-sm disabled:opacity-50"
+          >
+            {updatePriceMutation.isPending ? 'Saving...' : 'Save Price'}
+          </button>
+        </div>
       </div>
 
       <DataTable columns={columns} data={magazines || []} onEdit={handleEdit} onDelete={handleDelete} />

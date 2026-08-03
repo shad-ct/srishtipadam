@@ -154,9 +154,10 @@ export const Navbar = () => {
             transition={{ type: 'spring', damping: 26, stiffness: 220 }}
             className="lg:hidden fixed inset-y-0 right-0 w-72 z-50 shadow-2xl flex flex-col"
             style={{
-              background: 'rgba(244, 241, 234, 0.95)',
+              background: theme === 'dark' ? 'rgba(7, 14, 11, 0.96)' : 'rgba(244, 241, 234, 0.96)',
               backdropFilter: 'blur(24px)',
               WebkitBackdropFilter: 'blur(24px)',
+              borderLeft: theme === 'dark' ? '1px solid rgba(61, 184, 107, 0.12)' : '1px solid rgba(220, 232, 223, 0.7)',
             }}
           >
             {/* Drawer header */}
@@ -174,7 +175,7 @@ export const Navbar = () => {
               </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-[#3B5A4B] dark:text-[#9DB3A6] hover:bg-[#1F3E2F]/08 transition-colors"
+                className="w-8 h-8 rounded-full flex items-center justify-center text-[#3B5A4B] dark:text-[#9DB3A6] hover:bg-[#1F3E2F]/08 dark:hover:bg-white/08 transition-colors"
               >
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
